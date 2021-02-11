@@ -12,7 +12,6 @@ int endNumber=20;
 while (startNumber<=endNumber){
   if (startNumber%2==0){
   println(startNumber);
-  startNumber++;
   }
   startNumber++;
 }
