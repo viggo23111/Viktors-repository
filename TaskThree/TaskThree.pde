@@ -5,8 +5,7 @@ color backgroundColor=0;
 color turnedOff=155;
 int timeCounter=0;
 
-void setup()
-{
+void setup(){
   size(140, 500);
   background(backgroundColor);
   ellipseMode(CENTER);
@@ -17,25 +16,25 @@ void setup()
 }
 
 void draw() {
-
+  timeCounter++;
   if (timeCounter<=100) {
     fill(ellipseOne);
     ellipse(70, 100, 140, 140);
-    timeCounter++;
+   
   } else if (timeCounter<=200) {
     fill(ellipseOne);
     ellipse(70, 100, 140, 140);
     fill(ellipseTwo);
     ellipse(70, 250, 140, 140);
-    timeCounter++;
+    
   } else if (timeCounter<=300) {
-    fill(ellipseOne);
+    fill(turnedOff);
     ellipse(70, 100, 140, 140);
-    fill(ellipseTwo);
+    fill(turnedOff);
     ellipse(70, 250, 140, 140);
     fill(ellipseThree);
     ellipse(70, 400, 140, 140);
-    timeCounter++;
+    
   } else if (timeCounter<=400) {
     fill(turnedOff);
     ellipse(70, 100, 140, 140);
@@ -43,8 +42,8 @@ void draw() {
     ellipse(70, 250, 140, 140);
     fill(turnedOff);
     ellipse(70, 400, 140, 140);
-    timeCounter++;
-  } else if (timeCounter>400) {
+    
+  } else if (timeCounter>350) {
     timeCounter=0;
   }
 }
