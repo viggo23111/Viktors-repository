@@ -22,8 +22,6 @@ void draw() {
     ellipse(70, 100, 140, 140);
    
   } else if (timeCounter<=200) {
-    fill(ellipseOne);
-    ellipse(70, 100, 140, 140);
     fill(ellipseTwo);
     ellipse(70, 250, 140, 140);
     
@@ -35,11 +33,7 @@ void draw() {
     fill(ellipseThree);
     ellipse(70, 400, 140, 140);
     
-  } else if (timeCounter<=400) {
-    fill(turnedOff);
-    ellipse(70, 100, 140, 140);
-    fill(turnedOff);
-    ellipse(70, 250, 140, 140);
+  } else if (timeCounter<=350) {
     fill(turnedOff);
     ellipse(70, 400, 140, 140);
     
