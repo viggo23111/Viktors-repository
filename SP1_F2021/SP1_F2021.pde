@@ -1,14 +1,13 @@
-
 int size = 40;
 int[][] grid = new int[25][25];
-
+long lastTime = 0;
 Player player;
 Enemy[] enemies = new Enemy[4];
 Food[] foods = new Food[4];
 
 void setup() {
   size(1000, 1100);
-
+  lastTime = millis();
   player = new Player(5, 2);
   for (int i = 0; i < enemies.length; i++) {
     enemies[i] = new Enemy(int(random(1, 24)), int(random(1, 24)), player);
@@ -57,9 +56,9 @@ void drawBoard() {
 void updateEntities() {
   for (int i = 0; i < enemies.length; i++) {
     grid[enemies[i].x][enemies[i].y] = enemies[i].type;
+    resolveCollisions(i, 0);
     if (frameCount%20==0) {
-      enemies[i].moveTowardsPlayer();
-      resolveCollisions(0, i);
+      //  enemies[i].moveTowardsPlayer();
     }
   }
   for (int i = 0; i < foods.length; i++) {
@@ -117,7 +116,9 @@ void keyPressed() {
 }
 
 void resolveCollisions(int enemyId, int foodId) {
-  if (player.x == enemies[enemyId].x && player.y == enemies[enemyId].y ) {
+  if (player.x == enemies[enemyId].x && player.y == enemies[enemyId].y && millis() - lastTime > 200) {
+    println( "Lose health every 0.2 seconds" );
+    lastTime = millis();
     player.takeDamage();
     println("Health:" +player.health);
     healthBar();
@@ -131,29 +132,45 @@ void resolveCollisions(int enemyId, int foodId) {
 }
 
 void healthBar() {
-  if (player.health>90) {
-    fill(#00FF12);
-    rect(0, 1000, 700, 200);
-  } else if (player.health>50) {
-    fill(#00FF12);
-    rect(0, 1000, 600, 200);
-  } else {
-    fill(#FF0505);
-    rect(0, 1000, 600, 200);
+  float playerHealth = float(player.health);
+  float fullHealthbarWidth=width/1.43;
+  float healthBarLength=playerHealth*6.9;
+  color healthBarColor=(#35D128);
+  fill(0);
+  rect(0, 1000, fullHealthbarWidth, 200);
+  if (playerHealth>75) {
+    healthBarColor=(#35D128);
+  } else if (playerHealth>50) {
+    healthBarColor=(#F0F50F);
+  } else if (playerHealth>25) {
+    healthBarColor=(#FF890A);
+  } else if (playerHealth>0) {
+    healthBarColor=(#FF0505);
+  } else{
+    healthBarColor=(255);
+    healthBarLength=0;
   }
+  noStroke();
+  fill(healthBarColor);
+  rect(5, 1005, healthBarLength, 95);
+  PFont f;
+  f = createFont("verdana", 18);
+  textFont(f);
+  textSize(30);
+  fill(255);
+  text("HP:"+player.health+"/100", width/4, 1070);
 }
 
 
 void scoreBoard() {
   fill(133);
-  rect(700, 1000, 300, 200);
+  rect(700, 1000, width/3, 200);
   PFont f;
   f = createFont("verdana", 18);
   textFont(f);
-  textSize(50);
+  textSize(30);
   fill(255);
-  text("Score:"+player.score, 700, 1070);
-  println("test");
+  text("Score:"+player.score, 750, 1070);
 }
 
 
