@@ -9,14 +9,14 @@ class Player
     Player(int x, int y){
         this.x = x;
         this.y = y;
-        health = 100;
+        health = 1000;
         score = 0;
     }
     
         
     void takeDamage()
     {
-        health--;    
+       health--;   
     }
     
     void increaseScore()

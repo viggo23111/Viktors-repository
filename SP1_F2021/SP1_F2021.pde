@@ -3,23 +3,26 @@ int size = 40;
 int[][] grid = new int[25][25];
 
 Player player;
-Enemy enemy1;
-Enemy enemy2;
-Enemy enemy3;
-Enemy enemy4;
-Food food;
+Enemy[] enemies = new Enemy[4];
+Food[] foods = new Food[4];
 
 void setup() {
-  size(1000, 1000);
+  size(1000, 1100);
+
   player = new Player(5, 2);
+  for (int i = 0; i < enemies.length; i++) {
+    enemies[i] = new Enemy(int(random(1, 24)), int(random(1, 24)), player);
+    grid[enemies[i].x][enemies[i].y] = enemies[i].type;
+  }
 
-  enemy1 = new Enemy(10, 10, player);
-  /* enemy2 = new Enemy(1, 10, player);
-   enemy3 = new Enemy(14, 10, player);
-   enemy4 = new Enemy(23, 10, player);*/
-
-  food = new Food(15, 15, player);
+  for (int i = 0; i < foods.length; i++) {
+    foods[i] = new Food(int(random(1, 24)), int(random(1, 24)), player);
+    grid[foods[i].x][foods[i].y] = foods[i].type;
+  }
+  scoreBoard();
+  healthBar();
 }
+
 
 void draw() {
   clearBoard();// sætter alle værdier til 0 via double for loop (grid[x][y] = 0;)
@@ -28,7 +31,6 @@ void draw() {
   isGameOver(); // returnerer true hvis spillerens health er under -1.
   // tjekker om enemy og player står på samme x og y koordinat. Hvis ja, så kald player.takeDamage();
   // tjekker om food og player står på samme x og y koordinat. Hvis ja, så kald player.increaseScore();
- 
 }
 
 void clearBoard() {
@@ -53,17 +55,21 @@ void drawBoard() {
 }
 
 void updateEntities() {
-  grid[food.x][food.y] = food.type;
-  grid[enemy1.x][enemy1.y] = enemy1.type;
-  /* grid[enemy2.x][enemy2.y] = enemy2.type;
-   grid[enemy3.x][enemy3.y] = enemy3.type;
-   grid[enemy4.x][enemy4.y] = enemy4.type;*/
-  grid[player.x][player.y] = player.type;
-  if (frameCount%20==0){
-  enemy1.moveTowardsPlayer();
-  food.moveAwayFromPlayer();
-  resolveCollisions();
+  for (int i = 0; i < enemies.length; i++) {
+    grid[enemies[i].x][enemies[i].y] = enemies[i].type;
+    if (frameCount%20==0) {
+      enemies[i].moveTowardsPlayer();
+      resolveCollisions(0, i);
+    }
   }
+  for (int i = 0; i < foods.length; i++) {
+    grid[foods[i].x][foods[i].y] = foods[i].type;
+    resolveCollisions(0, i);
+    if (frameCount%40==0) {
+      foods[i].moveAwayFromPlayer();
+    }
+  }
+  grid[player.x][player.y] = player.type;
 }
 
 
@@ -110,16 +116,46 @@ void keyPressed() {
   }
 }
 
-void resolveCollisions() {
-  if (player.x == enemy1.x && player.y == enemy1.y ) {
+void resolveCollisions(int enemyId, int foodId) {
+  if (player.x == enemies[enemyId].x && player.y == enemies[enemyId].y ) {
     player.takeDamage();
-    //println("Health:" +player.health);
- 
-  } else if (player.x == food.x && player.y == food.y) {
+    println("Health:" +player.health);
+    healthBar();
+  } else if (player.x == foods[foodId].x && player.y == foods[foodId].y) {
     player.increaseScore();
-   // println("Score:" +player.score);
+    println("Score:" +player.score);
+    foods[foodId].x=int(random(1, 24));
+    foods[foodId].y=int(random(1, 24));
+    scoreBoard();
   }
 }
+
+void healthBar() {
+  if (player.health>90) {
+    fill(#00FF12);
+    rect(0, 1000, 700, 200);
+  } else if (player.health>50) {
+    fill(#00FF12);
+    rect(0, 1000, 600, 200);
+  } else {
+    fill(#FF0505);
+    rect(0, 1000, 600, 200);
+  }
+}
+
+
+void scoreBoard() {
+  fill(133);
+  rect(700, 1000, 300, 200);
+  PFont f;
+  f = createFont("verdana", 18);
+  textFont(f);
+  textSize(50);
+  fill(255);
+  text("Score:"+player.score, 700, 1070);
+  println("test");
+}
+
 
 boolean isGameOver() {
   if (player.health<1) {
