@@ -2,7 +2,7 @@ class Enemy
 {
     int x; 
     int y; 
-    int type = 1; 
+    int type = 3; 
     Player player;
 
     Enemy(int x, int y, Player player)
@@ -12,7 +12,7 @@ class Enemy
         this.player = player;
     }
 
-    void MoveTowardsPlayer()
+    void moveTowardsPlayer()
     {
         int xDistance = Math.abs(player.x - x);
         int yDistance = Math.abs(player.y - y);

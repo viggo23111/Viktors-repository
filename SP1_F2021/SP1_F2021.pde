@@ -4,19 +4,26 @@ int[][] grid = new int[25][25];
 
 Player player;
 Enemy enemy;
+Food food;
 
 void setup()
 {
   size(1000, 1000);
-  player = new Player(3, 4);
-  enemy = new Enemy(20, 19, player);
+  player = new Player(5, 2);
+  enemy = new Enemy(10, 10, player);
+  food = new Food(15, 15, player);
 }
 
 void draw()
 {
-  clearBoard();
-  updateEntities();
-  drawBoard();
+  clearBoard();// sætter alle værdier til 0 via double for loop (grid[x][y] = 0;)
+  updateEntities();// kalder enemy.moveTowardsPlayer() på hver enemy.
+  drawBoard(); // tegner rect og bruger getColorFromType metoden til at bestemme fill værdi.
+  //isGameOver(); // returnerer true hvis spillerens health er under -1.
+ //resolveCollisions();// tjekker om enemy og player står på samme x og y koordinat. Hvis ja, så kald player.takeDamage();
+// tjekker om food og player står på samme x og y koordinat. Hvis ja, så kald player.increaseScore();
+  println(player.health);
+
 }
 
 void clearBoard()
@@ -37,7 +44,6 @@ void drawBoard()
     for (int y = 0; y < grid[0].length; y++)
     {
       fill(getColorFromType(grid[x][y]));
-
       rect(x * size, y * size, size, size);
     }
   }
@@ -45,8 +51,11 @@ void drawBoard()
 
 void updateEntities()
 {
+  grid[food.x][food.y] = food.type;
+  grid[enemy.x][enemy.y] = enemy.type;
   grid[player.x][player.y] = player.type;
-  player.takeDamage();
+  moveTowardsPlayer()
+  //player.takeDamage();
 }
 
 
@@ -59,14 +68,14 @@ color getColorFromType(int type)
   case 0: 
     c = color(127);
     break;
-  case 1: 
-    c = color(255, 0, 0);
+  case 1: //Player color
+    c = color(#27FF2F);
     break;
-  case 2: 
-    c = color(0, 255, 0);
+  case 2: //Food color
+    c = color(#2987FF);
     break;
-  case 3: 
-    c = color(0, 0, 255);
+  case 3: //Enemy color
+    c = color(#FF1F1F);
     break;
   case 4: 
     c = color (0, 255, 255);
@@ -76,6 +85,7 @@ color getColorFromType(int type)
   return c;
 }
 
+/*
 void printIntArray(int[][] arr) 
 {
   System.out.println("");
@@ -90,7 +100,7 @@ void printIntArray(int[][] arr)
     }
     println();
   }
-}
+}*/
 
 void keyPressed(){
   if (key == 'w' && player.y>0)
@@ -112,5 +122,13 @@ void keyPressed(){
   {
     println(player.x,player.y);
     player.x++;
+  }
+}
+
+boolean isGameOver(){
+  if (player.health<1){
+    return true;
+  }else{
+    return false;
   }
 }
