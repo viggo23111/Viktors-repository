@@ -4,8 +4,7 @@ long lastTime = 0;
 Player player;
 Enemy[] enemies = new Enemy[4];
 Food[] foods = new Food[4];
-
-boolean gameover = false;
+boolean gameover = false;w
 
 
 void setup() {
@@ -27,13 +26,13 @@ void setup() {
 
 
 void draw() {
-  healthBar();
   //Checks if player have more than 0 health, if yes he will call the functions underneath
-  if(!gameover){
+  if (!gameover) {
     clearBoard();// sætter alle værdier til 0 via double for loop (grid[x][y] = 0;)
     updateEntities();// kalder enemy.moveTowardsPlayer() på hver enemy.
     drawBoard(); // tegner rect og bruger getColorFromType metoden til at bestemme fill værdi.
     //isGameOver(); // returnerer true hvis spillerens health er under -1.
+    healthBar();
     scoreBoard();
   } else {
     fill(#F00C0C); // RED
@@ -41,17 +40,15 @@ void draw() {
     textAlign(CENTER);
     text("GAME OVER \n Your Score is: " + player.score + "\n Press ENTER", width/2, height/3);
     if (keyCode == ENTER) {
+      keyCode=-1;
       player.health=player.startHealth;
       player.score=player.startScore;
       gameover = false;
-       scoreBoard();
-       healthBar();
-       clearBoard();
+      clearBoard();
       for (int i = 0; i < enemies.length; i++) {
         enemies[i].x=int(random(1, 24));
         enemies[i].y=int(random(1, 24));
       }
-      
     }
   }
 }
@@ -185,24 +182,20 @@ void healthBar() {
   fill(healthBarColor);
   rect(5, 1005, healthBarLength, 95);
   stroke(1);
-  PFont f;
-  f = createFont("verdana", 18);
-  textFont(f);
   textSize(30);
   fill(255);
-  text("HP:"+player.health+"/100", width/4, 1070);
+  textAlign(CENTER);
+  text("HP:"+player.health+"/100", 350, 1070);
 }
 
-//Creates a text that contains your score
+//Creates a a scoreboard
 void scoreBoard() {
-  fill(133);
+  textAlign(CENTER);
+  fill(0);
   rect(700, 1000, width/3, 200);
-  PFont f;
-  f = createFont("verdana", 18);
-  textFont(f);
   textSize(30);
   fill(255);
-  text("Score:"+player.score, 750, 1070);
+  text("Score:"+player.score, 800, 1070);
 }
 
 
