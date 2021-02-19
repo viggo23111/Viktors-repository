@@ -16,9 +16,9 @@ class Food
     int xDistance = Math.abs(player.x - x);
     int yDistance = Math.abs(player.y - y);
 
-    // random chance (~25% chance) for at food flytter sig i en tilfældig retning. 
+    // random chance (~25% chance) for at food står stille
     if (random(0, 1)<=0.25) {
-      println("25% chance");
+      
     } else {
       if (xDistance > yDistance) {
         if (x>player.x && x<grid.length-1) {

@@ -4,7 +4,7 @@ long lastTime = 0;
 Player player;
 Enemy[] enemies = new Enemy[4];
 Food[] foods = new Food[4];
-boolean gameover = false;w
+boolean gameover = false;
 
 
 void setup() {
@@ -140,14 +140,11 @@ void keyPressed() {
 //This function decides what happen if player get hit by an enemy or if the player hit some food
 void resolveCollisions(int enemyId, int foodId) {
   if (player.x == enemies[enemyId].x && player.y == enemies[enemyId].y && millis() - lastTime > 200) {
-    println( "Lose health every 0.2 seconds" );
     lastTime = millis();
     player.takeDamage();
-    println("Health:" +player.health);
     healthBar();
   } else if (player.x == foods[foodId].x && player.y == foods[foodId].y) {
     player.increaseScore();
-    println("Score:" +player.score);
     foods[foodId].x=int(random(1, 24));
     foods[foodId].y=int(random(1, 24));
     scoreBoard();
@@ -201,10 +198,8 @@ void scoreBoard() {
 
 boolean isGameOver() {
   if (player.health<1) {
-    println("game over");
     return true;
   } else {
-    println("game in progress");
     return false;
   }
 }

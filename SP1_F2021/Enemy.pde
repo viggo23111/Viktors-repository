@@ -16,23 +16,26 @@ class Enemy
     int xDistance = Math.abs(player.x - x);
     int yDistance = Math.abs(player.y - y);
 
-    // random chance (~25% chance) for at enemy flytter sig i en tilfældig retning. 
-    
-    if (xDistance > yDistance) {
-      if (x>player.x) {
-        x--;
-        // opdatér x værdi til at rykke ét felt nærmere playeren!
-      } else if (x<player.x) {
-        x++;
-      }
+    // random chance (~25% chance) for at enemy står stille
+    if (random(0, 1)<=0.25) {
+     
     } else {
-      if (y>player.y) {
-        y--;
-        // opdatér x værdi til at rykke ét felt nærmere playeren!
-      } else if (y<player.y) {
-        y++;
+      if (xDistance > yDistance) {
+        if (x>player.x) {
+          x--;
+          // opdatér x værdi til at rykke ét felt nærmere playeren!
+        } else if (x<player.x) {
+          x++;
+        }
+      } else {
+        if (y>player.y) {
+          y--;
+          // opdatér x værdi til at rykke ét felt nærmere playeren!
+        } else if (y<player.y) {
+          y++;
 
-        // opdatér y værdi til at rykke ét felt nærmere playeren!
+          // opdatér y værdi til at rykke ét felt nærmere playeren!
+        }
       }
     }
   }
