@@ -5,6 +5,9 @@ Player player;
 Enemy[] enemies = new Enemy[4];
 Food[] foods = new Food[4];
 
+boolean gameover = false;
+
+
 void setup() {
   size(1000, 1100);
   lastTime = millis();
@@ -24,12 +27,33 @@ void setup() {
 
 
 void draw() {
-  clearBoard();// sætter alle værdier til 0 via double for loop (grid[x][y] = 0;)
-  updateEntities();// kalder enemy.moveTowardsPlayer() på hver enemy.
-  drawBoard(); // tegner rect og bruger getColorFromType metoden til at bestemme fill værdi.
-  isGameOver(); // returnerer true hvis spillerens health er under -1.
-  // tjekker om enemy og player står på samme x og y koordinat. Hvis ja, så kald player.takeDamage();
-  // tjekker om food og player står på samme x og y koordinat. Hvis ja, så kald player.increaseScore();
+  healthBar();
+  //Checks if player have more than 0 health, if yes he will call the functions underneath
+  if(!gameover){
+    clearBoard();// sætter alle værdier til 0 via double for loop (grid[x][y] = 0;)
+    updateEntities();// kalder enemy.moveTowardsPlayer() på hver enemy.
+    drawBoard(); // tegner rect og bruger getColorFromType metoden til at bestemme fill værdi.
+    //isGameOver(); // returnerer true hvis spillerens health er under -1.
+    scoreBoard();
+  } else {
+    fill(#F00C0C); // RED
+    textSize(100);
+    textAlign(CENTER);
+    text("GAME OVER \n Your Score is: " + player.score + "\n Press ENTER", width/2, height/3);
+    if (keyCode == ENTER) {
+      player.health=player.startHealth;
+      player.score=player.startScore;
+      gameover = false;
+       scoreBoard();
+       healthBar();
+       clearBoard();
+      for (int i = 0; i < enemies.length; i++) {
+        enemies[i].x=int(random(1, 24));
+        enemies[i].y=int(random(1, 24));
+      }
+      
+    }
+  }
 }
 
 void clearBoard() {
@@ -58,7 +82,7 @@ void updateEntities() {
     grid[enemies[i].x][enemies[i].y] = enemies[i].type;
     resolveCollisions(i, 0);
     if (frameCount%20==0) {
-      //  enemies[i].moveTowardsPlayer();
+      enemies[i].moveTowardsPlayer();
     }
   }
   for (int i = 0; i < foods.length; i++) {
@@ -96,6 +120,7 @@ color getColorFromType(int type) {
   return c;
 }
 
+//Players movement keys
 void keyPressed() {
   if (key == 'w' && player.y>0)
   {
@@ -115,6 +140,7 @@ void keyPressed() {
   }
 }
 
+//This function decides what happen if player get hit by an enemy or if the player hit some food
 void resolveCollisions(int enemyId, int foodId) {
   if (player.x == enemies[enemyId].x && player.y == enemies[enemyId].y && millis() - lastTime > 200) {
     println( "Lose health every 0.2 seconds" );
@@ -131,13 +157,17 @@ void resolveCollisions(int enemyId, int foodId) {
   }
 }
 
+
+//Creates a health bar that decreases every time you get hit by an enemy, it changes color depending on how low you get.
 void healthBar() {
   float playerHealth = float(player.health);
   float fullHealthbarWidth=width/1.43;
   float healthBarLength=playerHealth*6.9;
   color healthBarColor=(#35D128);
+
   fill(0);
   rect(0, 1000, fullHealthbarWidth, 200);
+
   if (playerHealth>75) {
     healthBarColor=(#35D128);
   } else if (playerHealth>50) {
@@ -146,13 +176,15 @@ void healthBar() {
     healthBarColor=(#FF890A);
   } else if (playerHealth>0) {
     healthBarColor=(#FF0505);
-  } else{
+  } else {
     healthBarColor=(255);
     healthBarLength=0;
+    gameover = true;
   }
   noStroke();
   fill(healthBarColor);
   rect(5, 1005, healthBarLength, 95);
+  stroke(1);
   PFont f;
   f = createFont("verdana", 18);
   textFont(f);
@@ -161,7 +193,7 @@ void healthBar() {
   text("HP:"+player.health+"/100", width/4, 1070);
 }
 
-
+//Creates a text that contains your score
 void scoreBoard() {
   fill(133);
   rect(700, 1000, width/3, 200);
@@ -179,6 +211,7 @@ boolean isGameOver() {
     println("game over");
     return true;
   } else {
+    println("game in progress");
     return false;
   }
 }
