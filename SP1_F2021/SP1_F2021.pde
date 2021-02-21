@@ -1,4 +1,4 @@
-int size = 40;
+int size = 34;
 int[][] grid = new int[25][25];
 long lastTime = 0;
 Player player;
@@ -8,7 +8,7 @@ boolean gameover = false;
 
 
 void setup() {
-  size(1000, 1100);
+  size(850, 950);
   lastTime = millis();
   player = new Player(5, 2);
   for (int i = 0; i < enemies.length; i++) {
@@ -36,7 +36,7 @@ void draw() {
     scoreBoard();
   } else {
     fill(#F00C0C); // RED
-    textSize(100);
+    textSize(90);
     textAlign(CENTER);
     text("GAME OVER \n Your Score is: " + player.score + "\n Press ENTER", width/2, height/3);
     if (keyCode == ENTER) {
@@ -155,12 +155,12 @@ void resolveCollisions(int enemyId, int foodId) {
 //Creates a health bar that decreases every time you get hit by an enemy, it changes color depending on how low you get.
 void healthBar() {
   float playerHealth = float(player.health);
-  float fullHealthbarWidth=width/1.43;
-  float healthBarLength=playerHealth*6.9;
+  float fullHealthbarWidth=width/1.40;
+  float healthBarLength=playerHealth*6.5;
   color healthBarColor=(#35D128);
 
   fill(0);
-  rect(0, 1000, fullHealthbarWidth, 200);
+  rect(0, height-100, fullHealthbarWidth, 200);
 
   if (playerHealth>75) {
     healthBarColor=(#35D128);
@@ -177,22 +177,22 @@ void healthBar() {
   }
   noStroke();
   fill(healthBarColor);
-  rect(5, 1005, healthBarLength, 95);
+  rect(5, height-95, healthBarLength, 95);
   stroke(1);
   textSize(30);
   fill(255);
   textAlign(CENTER);
-  text("HP:"+player.health+"/100", 350, 1070);
+  text("HP:"+player.health+"/100", width/3, height-30);
 }
 
 //Creates a a scoreboard
 void scoreBoard() {
   textAlign(CENTER);
   fill(0);
-  rect(700, 1000, width/3, 200);
+  rect(width-260, height-100, width, 200);
   textSize(30);
   fill(255);
-  text("Score:"+player.score, 800, 1070);
+  text("Score:"+player.score, width/1.20, height-30);
 }
 
 
