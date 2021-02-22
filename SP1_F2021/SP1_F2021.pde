@@ -2,6 +2,8 @@ int size = 34;
 int[][] grid = new int[25][25];
 long lastTime = 0;
 Player player;
+Hud hud;
+Board board;
 Enemy[] enemies = new Enemy[4];
 Food[] foods = new Food[4];
 boolean gameover = false;
@@ -11,6 +13,10 @@ void setup() {
   size(850, 950);
   lastTime = millis();
   player = new Player(5, 2);
+  hud = new Hud(player);
+  board = new Board();
+  hud.healthBar();
+  hud.scoreBoard();
   for (int i = 0; i < enemies.length; i++) {
     enemies[i] = new Enemy(int(random(1, 24)), int(random(1, 24)), player);
     grid[enemies[i].x][enemies[i].y] = enemies[i].type;
@@ -20,20 +26,18 @@ void setup() {
     foods[i] = new Food(int(random(1, 24)), int(random(1, 24)), player);
     grid[foods[i].x][foods[i].y] = foods[i].type;
   }
-  scoreBoard();
-  healthBar();
 }
 
 
 void draw() {
   //Checks if player have more than 0 health, if yes he will call the functions underneath
   if (!gameover) {
-    clearBoard();// sætter alle værdier til 0 via double for loop (grid[x][y] = 0;)
+    board.clearBoard();// sætter alle værdier til 0 via double for loop (grid[x][y] = 0;)
     updateEntities();// kalder enemy.moveTowardsPlayer() på hver enemy.
-    drawBoard(); // tegner rect og bruger getColorFromType metoden til at bestemme fill værdi.
+    board.drawBoard(); // tegner rect og bruger getColorFromType metoden til at bestemme fill værdi.
     //isGameOver(); // returnerer true hvis spillerens health er under -1.
-    healthBar();
-    scoreBoard();
+    hud.healthBar();
+    hud.scoreBoard();
   } else {
     fill(#F00C0C); // RED
     textSize(90);
@@ -44,32 +48,11 @@ void draw() {
       player.health=player.startHealth;
       player.score=player.startScore;
       gameover = false;
-      clearBoard();
+      board.clearBoard();
       for (int i = 0; i < enemies.length; i++) {
         enemies[i].x=int(random(1, 24));
         enemies[i].y=int(random(1, 24));
       }
-    }
-  }
-}
-
-void clearBoard() {
-  for (int x = 0; x < grid.length; x++)
-  {
-    for (int y = 0; y < grid[0].length; y++)
-    {
-      grid[x][y] = 0;
-    }
-  }
-}
-
-void drawBoard() {
-  for (int x = 0; x < grid.length; x++)
-  {
-    for (int y = 0; y < grid[0].length; y++)
-    {
-      fill(getColorFromType(grid[x][y]));
-      rect(x * size, y * size, size, size);
     }
   }
 }
@@ -142,57 +125,15 @@ void resolveCollisions(int enemyId, int foodId) {
   if (player.x == enemies[enemyId].x && player.y == enemies[enemyId].y && millis() - lastTime > 200) {
     lastTime = millis();
     player.takeDamage();
-    healthBar();
+    //healthBar();
+    hud.healthBar();
   } else if (player.x == foods[foodId].x && player.y == foods[foodId].y) {
     player.increaseScore();
     foods[foodId].x=int(random(1, 24));
     foods[foodId].y=int(random(1, 24));
-    scoreBoard();
+    //scoreBoard();
+    hud.scoreBoard();
   }
-}
-
-
-//Creates a health bar that decreases every time you get hit by an enemy, it changes color depending on how low you get.
-void healthBar() {
-  float playerHealth = float(player.health);
-  float fullHealthbarWidth=width/1.40;
-  float healthBarLength=playerHealth*6.5;
-  color healthBarColor=(#35D128);
-
-  fill(0);
-  rect(0, height-100, fullHealthbarWidth, 200);
-
-  if (playerHealth>75) {
-    healthBarColor=(#35D128);
-  } else if (playerHealth>50) {
-    healthBarColor=(#F0F50F);
-  } else if (playerHealth>25) {
-    healthBarColor=(#FF890A);
-  } else if (playerHealth>0) {
-    healthBarColor=(#FF0505);
-  } else {
-    healthBarColor=(255);
-    healthBarLength=0;
-    gameover = true;
-  }
-  noStroke();
-  fill(healthBarColor);
-  rect(5, height-95, healthBarLength, 95);
-  stroke(1);
-  textSize(30);
-  fill(255);
-  textAlign(CENTER);
-  text("HP:"+player.health+"/100", width/3, height-30);
-}
-
-//Creates a a scoreboard
-void scoreBoard() {
-  textAlign(CENTER);
-  fill(0);
-  rect(width-260, height-100, width, 200);
-  textSize(30);
-  fill(255);
-  text("Score:"+player.score, width/1.20, height-30);
 }
 
 
