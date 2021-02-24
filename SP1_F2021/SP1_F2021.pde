@@ -4,8 +4,8 @@ long lastTime = 0;
 Player player;
 Hud hud;
 Board board;
-Enemy[] enemies = new Enemy[4];
-Food[] foods = new Food[4];
+Enemy[] enemies = new Enemy[10];
+Food[] foods = new Food[8];
 boolean gameover = false;
 
 
@@ -39,7 +39,7 @@ void draw() {
     hud.healthBar();
     hud.scoreBoard();
   } else {
-    fill(#F00C0C); // RED
+    fill(0);
     textSize(90);
     textAlign(CENTER);
     text("GAME OVER \n Your Score is: " + player.score + "\n Press ENTER", width/2, height/3);
@@ -56,25 +56,6 @@ void draw() {
     }
   }
 }
-
-void updateEntities() {
-  for (int i = 0; i < enemies.length; i++) {
-    grid[enemies[i].x][enemies[i].y] = enemies[i].type;
-    resolveCollisions(i, 0);
-    if (frameCount%20==0) {
-      enemies[i].moveTowardsPlayer();
-    }
-  }
-  for (int i = 0; i < foods.length; i++) {
-    grid[foods[i].x][foods[i].y] = foods[i].type;
-    resolveCollisions(0, i);
-    if (frameCount%40==0) {
-      foods[i].moveAwayFromPlayer();
-    }
-  }
-  grid[player.x][player.y] = player.type;
-}
-
 
 color getColorFromType(int type) {
   color c = color(255);
@@ -99,7 +80,37 @@ color getColorFromType(int type) {
   }    
   return c;
 }
+void updateEntities() {
+  for (int i = 0; i < enemies.length; i++) {
+    grid[enemies[i].x][enemies[i].y] = enemies[i].type;
+    resolveCollisions(i, 0);
+    if (frameCount%20==0) {
+      enemies[i].moveTowardsPlayer();
+    }
+  }
+  for (int i = 0; i < foods.length; i++) {
+    grid[foods[i].x][foods[i].y] = foods[i].type;
+    resolveCollisions(0, i);
+    if (frameCount%40==0) {
+      foods[i].moveAwayFromPlayer();
+    }
+  }
+  grid[player.x][player.y] = player.type;
+}
 
+//This function decides what happen if player get hit by an enemy or if the player hit some food
+void resolveCollisions(int enemyId, int foodId) {
+  if (player.x == enemies[enemyId].x && player.y == enemies[enemyId].y && millis() - lastTime > 200) {
+    lastTime = millis();
+    player.takeDamage();
+    hud.healthBar();
+  } else if (player.x == foods[foodId].x && player.y == foods[foodId].y) {
+    player.increaseScore();
+    foods[foodId].x=int(random(1, 24));
+    foods[foodId].y=int(random(1, 24));
+    hud.scoreBoard();
+  }
+}
 //Players movement keys
 void keyPressed() {
   if (key == 'w' && player.y>0)
@@ -119,23 +130,6 @@ void keyPressed() {
     player.x++;
   }
 }
-
-//This function decides what happen if player get hit by an enemy or if the player hit some food
-void resolveCollisions(int enemyId, int foodId) {
-  if (player.x == enemies[enemyId].x && player.y == enemies[enemyId].y && millis() - lastTime > 200) {
-    lastTime = millis();
-    player.takeDamage();
-    //healthBar();
-    hud.healthBar();
-  } else if (player.x == foods[foodId].x && player.y == foods[foodId].y) {
-    player.increaseScore();
-    foods[foodId].x=int(random(1, 24));
-    foods[foodId].y=int(random(1, 24));
-    //scoreBoard();
-    hud.scoreBoard();
-  }
-}
-
 
 boolean isGameOver() {
   if (player.health<1) {

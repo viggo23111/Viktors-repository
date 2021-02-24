@@ -18,6 +18,7 @@ class Enemy
 
     // random chance (~25% chance) for at enemy står stille
     if (random(0, 1)<=0.25) {
+    
      
     } else {
       if (xDistance > yDistance) {
