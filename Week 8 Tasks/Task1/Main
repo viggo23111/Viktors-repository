@@ -1,0 +1,10 @@
+class Main{
+	public static void Main(String [] args){
+	    printEmptyLine();
+	}
+
+	public static void printEmptyLine(){
+	    System.out.println("test");
+	}
+
+}
