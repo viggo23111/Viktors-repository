@@ -1,84 +1,88 @@
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
-	private static BankAccount[] accounts = new BankAccount[4];
 
-	public static void main(String[] args) {
-		/*accounts[0] = new BankAccount(30000);
-		accounts[1] = new BankAccount(30000);
-		accounts[2] = new BankAccount(30000);
-		accounts[3] = new BankAccount(30000);
-		assignPlayer(accounts[0]);
-		assignPlayer(accounts[1]);
-		assignPlayer(accounts[2]);
-		assignPlayer(accounts[3]);*/
-		readGameData();
+	//todo: create ArrayList as the system should support unknown numbers of players
+	//private static BankAccount[] accounts = new BankAccount[3];
+	public static ArrayList<BankAccount> accounts = new ArrayList<>();
+	public static void main(String[] args) throws IOException {
 
-		//printAccounts();
-		//accounts[0].withDrawAmount();
+		//  assignPlayer(account1);
+		//  assignPlayer(account2);
+		//  assignPlayer(account3);
+		try{
+			readAccountData();
+		}catch(IOException e){
+			System.out.println("Velkommen til Matador ");
+			UI ui = new UI();
+			ui.createAccounts();
+//todo opret UI klasse så brugeren kan oprette konti til alle deltagere
 
-		//printAccounts();
-		//saveGameData();
+		}
+
+		printAccounts();
+		//todo: erstat account1 med accounts[0]
+		int input=0;
+		try {
+			input = Integer.parseInt(UI.getUserInput("Træk beløb fra "+accounts.get(0).getOwner()+"'s konto"));
+		}catch (InputMismatchException e){
+			System.out.println(e.toString());
+				// = Integer.parseInt( Main.getUserInput("Træk beløb fra "+this.owner+"'s konto"));
+		}
+		accounts.get(0).withdrawAmount(input);
+		//accounts[0].withdrawAmount();
+		//accounts[2].withdrawAmount();
+		// gem spillets tilstand
+		saveGameData();
+	}
+
+	//todo:
+	// create a scanner and load file
+	// for each line in file
+	//      create bankAccount and add it to accounts array
+	//      set Owner on bankAccount
+
+	public static void readAccountData() throws IOException{
+		String [] accountLine;
+		File file = new File("data.txt");
+
+		Scanner scan = new Scanner(file);
+
+
+		while(scan.hasNextLine()) {
+			String line = scan.nextLine();
+			accountLine = line.split(":");
+			accounts.add (new BankAccount(Float.parseFloat(accountLine[1])));
+			int index = accounts.size();
+			accounts.get(index-1).setOwner(accountLine[0]);
+		}
 
 	}
 
-	private static void readGameData() {
-		try {
-			File file= new File("data.text");
-			Scanner fileReader = new Scanner(file);
-			String [] accountLine;
-			int i = 0;
-			while (fileReader.hasNextLine()) {
-				String data = fileReader.nextLine();
-				accountLine = data.split(":");
-				System.out.print(accountLine[0]);
-				System.out.print(accountLine[1]);
-				System.out.println();
-				float saldo = Float.parseFloat(accountLine[1]);
-				accounts[i] = new BankAccount(saldo);
-				accounts[i].setOwner(accountLine[0]);
-				i=i++;
-			}
-			fileReader.close();
-		} catch (FileNotFoundException e) {
-			System.out.println("An error occurred.");
+	public static void saveGameData(){
+		String gamedata = "";
+		for (BankAccount a:accounts) {
+			gamedata = gamedata + a.getOwner()+":"+a.getSaldo()+"\n";
+		}
+		try{
+			FileWriter writer = new FileWriter("data.txt");
+			writer.write(gamedata);
+			writer.close();
+
+		}catch (IOException e){
+			System.out.println(e.getCause());
 		}
 	}
 
 	public static void printAccounts(){
-		for (BankAccount a:accounts){
+		for (BankAccount a:accounts) {
 			System.out.println(a);
 		}
-	}
-
-	public static void saveGameData(){
-		String gameData="";
-		for (BankAccount a:accounts){
-			gameData+=a.getOwner()+" : "+a.getSaldo()+"\n";
-		}
-		try {
-			FileWriter writer = new FileWriter("data.text");
-			writer.write(gameData);
-			writer.close();
-		}catch (IOException e) {
-			System.out.println(e.getCause());
-		}
-	}
-	public static void assignPlayer(BankAccount account){
-
-		String input = getUserInput("Skriv kontoejers navn: ");
-		account.setOwner(input);
-		System.out.println(account.getOwner());
-	}
-	public static String getUserInput(String msg){
-		System.out.println(msg);
-		Scanner scan = new Scanner(System.in);
-		String input = scan.nextLine();
-		return input;
 	}
 
 }

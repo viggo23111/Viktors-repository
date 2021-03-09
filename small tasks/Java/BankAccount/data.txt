@@ -1,0 +1,5 @@
+viktor 0:20000.0
+viktor1:30000.0
+viktor2:30000.0
+viktor 3:30000.0
+viktor 4:30000.0
