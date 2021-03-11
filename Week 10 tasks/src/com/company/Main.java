@@ -9,20 +9,33 @@ public class Main {
 
     public static void main(String[] args) {
         // write your code here
+        System.out.println("Task 1");
         System.out.println(min(4, 2, 3));
+        System.out.println("Task 2");
         printEvenNumbers(10);
         System.out.println();
+        System.out.println("Task 3");
         System.out.println(smallestAbsVal(-10, 20, 30));
+        System.out.println("Task 4");
+        sumDigits(-99);
+        System.out.println("Task 5");
         reverseVertical("laptop");
+        System.out.println("Task 6");
         // processName();
+        System.out.println("Task 7");
         repeatString("hej");
+        System.out.println("Task 8");
        // shortestName(3);
+        System.out.println("Task 9");
         randomNumbers();
+        System.out.println("Task 10");
         maxMin();
+        System.out.println("Task 11");
         printMultiple(5);
+        System.out.println("Task 12");
         int[] listOfnumbers = {1, 2, 3, 4, 10};
         System.out.println(max(listOfnumbers));
-
+        System.out.println("Task 13");
         int[] a = {1,1,1,1};
         int[] b = {2,2,2,2};
         System.out.println(allLess(a,b));
@@ -61,22 +74,28 @@ public class Main {
 
     private static int smallestAbsVal(int a, int b, int c) {
         int smallest = 0;
-        if (a < 0) {
-            smallest = Math.min(b, c);
-        } else if (b < 0) {
-            Math.min(a, c);
-        } else if (c < 0) {
-            Math.min(a, b);
-        } else {
-            smallest = Math.min(a, Math.min(b, c));
-        }
+        int aAbs=Math.abs(a);
+        int bAbs=Math.abs(b);
+        int cAbs=Math.abs(c);
+        smallest = Math.min(aAbs, Math.min(bAbs, cAbs));
         return smallest;
     }
 
 //    Opgave 4
 //    Skriv en metode der hedder sumDigits som returnerer summen af den absolutte  værdi af en integers cifre.
 //    For eksempel vil et kald til sumDigits(931) returnere 13 og et kald til sumDigits(-99) returnere 18.
-
+    private static int sumDigits(int a) {
+        int aAbs=Math.abs(a);
+        int newNumber=0;
+        String number = String.valueOf(aAbs);
+        for(int i = 0; i < number.length(); i++) {
+            int j = Character.digit(number.charAt(i), 10);
+            newNumber=newNumber+j;
+            System.out.println("digit: " + j);
+        }
+        System.out.println(newNumber);
+        return newNumber;
+    }
 
     //    Opgave 5
 //    Skriv en metode der hedder reverseVertical som tager en String som parameter og udskriver hvert bogstav på en separat linje,
@@ -225,7 +244,7 @@ public class Main {
             return false;
         }
         for (int i = 0; i < a.length; i++) {
-            if (a[i] > b[i]) {
+            if (a[i] < b[i]) {
                 return false;
             }
         }
