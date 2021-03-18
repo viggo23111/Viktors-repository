@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d06eae7a-5222-423e-a586-74480e19a35c" name="Default Changelist" comment="" />
+    <list default="true" id="fa3de5ef-0345-4482-935f-d2c18e7218fb" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="ProjectId" id="1paIYWqnBshwgl0Z7yPEivpS5k8" />
+  <component name="ProjectId" id="1pvNRREKc72dQfBSEHIII8YHGBL" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
@@ -71,13 +78,10 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../small tasks/Java/Matador-main" />
-  </component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="com.company.Main" />
-      <module name="Week 10 tasks" />
+      <module name="Week 11 task 3" />
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
       <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Run" />
@@ -94,11 +98,11 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="d06eae7a-5222-423e-a586-74480e19a35c" name="Default Changelist" comment="" />
-      <created>1615414823501</created>
+      <changelist id="fa3de5ef-0345-4482-935f-d2c18e7218fb" name="Default Changelist" comment="" />
+      <created>1616059597735</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1615414823501</updated>
+      <updated>1616059597735</updated>
     </task>
     <servers />
   </component>
@@ -112,6 +116,5 @@
         </entry>
       </map>
     </option>
-    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

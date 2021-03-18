@@ -1,20 +1,21 @@
+import java.util.Locale;
 import java.util.Scanner;
 
 public class UI {
 
     public void createAccounts(){
-        int input = Integer.parseInt(getUserInput("Skriv antal deltagere: "));
-        for(int i = 0; i< input; i++){
-            Main.accounts.add(new BankAccount(30000));
-             assignPlayer(Main.accounts.get(i));
+        String input="";
+        System.out.println("Skriv q for at stoppe med at lave flere spillere.");
+        while(Main.players.size()<6){
+            input = getUserInput("Skriv navnet på spiller: ");
+            if (input.toUpperCase().equals("Q")){
+                break;
+            }
+            Player tmpPlayer=new Player(input,30000);
+            Main.players.add(tmpPlayer);
         }
-
     }
-    public static void assignPlayer(BankAccount account){
-        String input = getUserInput("Skriv kontoejers navn: ");
-        account.setOwner(input);
 
-    }
 
     public static String getUserInput(String msg){
         System.out.println(msg);
