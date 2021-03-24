@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4476c710-e464-46a3-b307-edbada69730e" name="Default Changelist" comment="" />
+    <list default="true" id="4476c710-e464-46a3-b307-edbada69730e" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../../../Week 11 tasks/Week 11 task 3/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/../../../Week 11 tasks/Week 11 task 3/.idea/.name" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Week 11 tasks/Week 11 task 3/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../Week 11 tasks/Week 11 task 3/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Week 11 tasks/Week 11 task 3/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../Week 11 tasks/Week 11 task 3/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data.txt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
