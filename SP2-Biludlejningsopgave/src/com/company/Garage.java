@@ -23,6 +23,7 @@ public class Garage {
 
     public double calculateGreenPropertyTaxForGarage(){
         double greenPropertyTaxForGarage = 0;
+
         for (int i = 0; i <cars.size(); i++) {
            greenPropertyTaxForGarage=greenPropertyTaxForGarage+cars.get(i).calculateGreenPropertyTax();
         }

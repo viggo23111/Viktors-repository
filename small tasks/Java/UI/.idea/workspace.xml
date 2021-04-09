@@ -1,32 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="148d9242-36b8-46bc-9ec3-4265e916badb" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../UITest/src/com/company/NewWindow.java" afterDir="false" />
+    <list default="true" id="e0a214a1-025e-41d9-b7c7-746bcfd80e5c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/../../../SP2-Biludlejningsopgave/out/production/SP2-Biludlejningsopgave/com/company/Garage.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../SP2-Biludlejningsopgave/out/production/SP2-Biludlejningsopgave/com/company/Garage.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../SP2-Biludlejningsopgave/out/production/SP2-Biludlejningsopgave/com/company/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../SP2-Biludlejningsopgave/out/production/SP2-Biludlejningsopgave/com/company/Main.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../SP2-Biludlejningsopgave/src/com/company/Garage.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../SP2-Biludlejningsopgave/src/com/company/Garage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../SP2-Biludlejningsopgave/src/com/company/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../SP2-Biludlejningsopgave/src/com/company/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Matador-main/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Matador-main/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Interface" />
-        <option value="Class" />
-      </list>
-    </option>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
   </component>
-  <component name="ProjectId" id="1ppixLgKywhdot3NOFzIHszr0cl" />
+  <component name="ProjectId" id="1qnFp5K8alwIdt01nKL7q3Cg86M" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
@@ -90,12 +80,12 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../UITest" />
   </component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="com.company.Main" />
-      <module name="Zoo" />
+      <module name="UI" />
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
       <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Run" />
@@ -103,20 +93,15 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Application.Main" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="148d9242-36b8-46bc-9ec3-4265e916badb" name="Default Changelist" comment="" />
-      <created>1615886679540</created>
+      <changelist id="e0a214a1-025e-41d9-b7c7-746bcfd80e5c" name="Default Changelist" comment="" />
+      <created>1617707628407</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1615886679540</updated>
+      <updated>1617707628407</updated>
     </task>
     <servers />
   </component>

@@ -2,11 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4476c710-e464-46a3-b307-edbada69730e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../../../SP2-Biludlejningsopgave/src/com/company/DieselCar.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../../SP2-Biludlejningsopgave/src/com/company/ElectricCar.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../../SP2-Biludlejningsopgave/src/com/company/Garage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../../SP2-Biludlejningsopgave/src/com/company/GasolineCar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../SP2-Biludlejningsopgave/src/com/company/Car.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../SP2-Biludlejningsopgave/src/com/company/Car.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../UITest/src/com/company/NewWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../SP2-Biludlejningsopgave/out/production/SP2-Biludlejningsopgave/com/company/Garage.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../SP2-Biludlejningsopgave/out/production/SP2-Biludlejningsopgave/com/company/Garage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../SP2-Biludlejningsopgave/out/production/SP2-Biludlejningsopgave/com/company/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../SP2-Biludlejningsopgave/out/production/SP2-Biludlejningsopgave/com/company/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../SP2-Biludlejningsopgave/src/com/company/Garage.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../SP2-Biludlejningsopgave/src/com/company/Garage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../SP2-Biludlejningsopgave/src/com/company/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../SP2-Biludlejningsopgave/src/com/company/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
