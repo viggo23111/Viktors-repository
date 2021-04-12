@@ -1,0 +1,16 @@
+Team1:t1p1:t1p2:2:0:1:2:true
+Team2:t2p1:t2p2:0:-4:0:1:true
+Team3:t3p1:t3p2:6:4:3:4:true
+Team4:t4p1:t4p2:8:14:4:4:false
+Team5:t1p1:t1p2:2:-1:1:2:true
+Team6:t2p1:t2p2:0:-4:0:1:true
+Team7:t3p1:t3p2:0:-2:0:1:true
+Team8:t4p1:t4p2:0:-3:0:1:true
+Team9:t1p1:t1p2:4:2:2:3:true
+Team10:t2p1:t2p2:0:-2:0:1:true
+Team11:t3p1:t3p2:2:0:1:2:true
+Team12:t4p1:t4p2:0:-1:0:1:true
+Team13:t1p1:t1p2:2:1:1:2:true
+Team14:t2p1:t2p2:0:-4:0:1:true
+Team15:t3p1:t3p2:0:-7:0:1:true
+Team16:t4p1:t4p2:4:7:2:3:true

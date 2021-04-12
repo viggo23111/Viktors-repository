@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="148d9242-36b8-46bc-9ec3-4265e916badb" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../UITest/src/com/company/NewWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../SP2-Biludlejningsopgave/out/production/SP2-Biludlejningsopgave/com/company/Garage.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../SP2-Biludlejningsopgave/out/production/SP2-Biludlejningsopgave/com/company/Garage.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../SP2-Biludlejningsopgave/out/production/SP2-Biludlejningsopgave/com/company/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../SP2-Biludlejningsopgave/out/production/SP2-Biludlejningsopgave/com/company/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../SP2-Biludlejningsopgave/src/com/company/Garage.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../SP2-Biludlejningsopgave/src/com/company/Garage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../SP2-Biludlejningsopgave/src/com/company/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../SP2-Biludlejningsopgave/src/com/company/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Matador-main/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Matador-main/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="148d9242-36b8-46bc-9ec3-4265e916badb" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
