@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="lib4">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/bordfodbold-main/out/production/bordfodbold-main/lib/gson-2.8.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/bordfodbold-main/out/production/bordfodbold-main/lib/json-simple-1.1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/bordfodbold-main/out/production/bordfodbold-main/lib/org.json.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
