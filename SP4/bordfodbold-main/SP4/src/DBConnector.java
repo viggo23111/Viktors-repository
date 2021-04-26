@@ -7,7 +7,7 @@ import java.time.*;
 public class DBConnector implements IO {
     static final String DB_URL = "jdbc:mysql://localhost/tournament?autoReconnect=true&useSSL=false";
     static final String USER = "root";
-    static final String PASS = "Kolort231100"; //ENV :(
+    static final String PASS = "Datamatiker123"; //ENV :(
 
     //In case we need a custom query; saveData() and loadData() will be used in most cases.
     public static ResultSet dbQuery(String query, boolean update) {
