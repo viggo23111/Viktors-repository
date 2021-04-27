@@ -1,6 +1,7 @@
 import java.io.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.time.*;
 import java.time.format.ResolverStyle;
@@ -35,7 +36,7 @@ public class UIData {
                 }
                 else if (dataExistsInput.equals("n")) {
                     // Existing data exists, but user would like to create new
-                    deleteDataFile(dataType, dataFile);
+                    deleteDataFile(dataFile);
                     return false;
                 }
                 else {
@@ -51,14 +52,16 @@ public class UIData {
     }
 
     // Deletes old txt files
-    public static void deleteDataFile(String dataType, File dataFile) {
+    //public static void deleteDataFile(String dataType, File dataFile) {
+    public static void deleteDataFile(File dataFile) {
         try {
             FileWriter writer = new FileWriter(dataFile);
             writer.write("");
             writer.close();
-            System.out.println("Deleted previous "+ dataType +" data");
+            System.out.println("Wiped - " + dataFile.getName());
+            // System.out.println("Deleted previous "+ dataType +" data");
         } catch (IOException e) {
-            System.out.println("Failed to delete previous "+ dataType +" data");
+            // System.out.println("Failed to delete previous "+ dataType +" data");
         }
     }
 
@@ -115,62 +118,75 @@ public class UIData {
     // TOURNAMENT
     // Creates a new tournament and returns it + saves to txt file
     public static void createTournament() {
-        // Tournament name
         String tournamentNameMsg = "Input name of tournament:\n";
         String tournamentNameInput = UI.getUserInput(tournamentNameMsg);
 
         String tournamentFounderNameMsg = "Input name of founder:\n";
         String tournamentFounderNameInput = UI.getUserInput(tournamentFounderNameMsg);
 
-
-        LocalTime tournamentStartTime;
-        while (true) {
-            String tournamentStartTimeMsg = "Input time of day the tournament shall start\nEx. 18:00\n";
-            String userTimeInput = UI.getUserInput(tournamentStartTimeMsg);
-            if (isValidTime(userTimeInput)) {
-                tournamentStartTime = LocalTime.parse(userTimeInput);
-                break;
-            } else {
-                System.out.println("\nWrong time format! Try again!\n");
+        String[] dateAndTimeMessages = {"\nInput time of day the tournament shall start\nEx. 18:00\n",
+                                        "\nInput date the tournament shall start\nEx. 2021-01-30\n",
+                                        "\nInput date the tournament due date\nEx. 2021-01-30\n"};
+        String[] userDateAndTimeInputs = {"", "", ""};
+        LocalTime tournamentStartTime = LocalTime.now();
+        LocalDate tournamentStartDate = LocalDate.now();
+        LocalDate tournamentDueDate = LocalDate.now();
+        for (int i = 0; i < 3; i++) {
+            while (true) {
+                userDateAndTimeInputs[i] = UI.getUserInput(dateAndTimeMessages[i]);
+                if (isValidTime(userDateAndTimeInputs[i]) || isValidDate(userDateAndTimeInputs[i])) {
+                    if (i == 0) {tournamentStartTime = LocalTime.parse(userDateAndTimeInputs[i]); break;}
+                    if (i == 1) {tournamentStartDate = LocalDate.parse(userDateAndTimeInputs[i]); break;}
+                    if (i == 2) {tournamentDueDate = LocalDate.parse(userDateAndTimeInputs[i]); break;}
+                } else System.out.println("\nWrong date or time format! Try again!\n");
             }
         }
+        Main.getIO().saveTournament(tournamentNameInput, tournamentFounderNameInput, tournamentStartTime, tournamentStartDate, tournamentDueDate);
 
-        LocalDate tournamentStartDate;
-        while (true) {
-            String tournamentStartDateMsg = "Input date the tournament shall start\nEx. 2021-01-30\n";
-            String userDateInput = UI.getUserInput(tournamentStartDateMsg);
-            if (isValidDate(userDateInput)) {
-                tournamentStartDate = LocalDate.parse(userDateInput);
-                break;
-            } else {
-                System.out.println("\nWrong date format! Try again!\n");
-            }
-        }
-
-        LocalDate tournamentDueDate;
-        while (true) {
-            String tournamentStartDateMsg = "Input date the tournament due date\nEx. 2021-01-30\n";
-            String userDateInput = UI.getUserInput(tournamentStartDateMsg);
-            if (isValidDate(userDateInput)) {
-                tournamentDueDate = LocalDate.parse(userDateInput);
-                break;
-            } else {
-                System.out.println("\nWrong date format! Try again!\n");
-            }
-        }
-
-        Tournament tournament = new Tournament(tournamentNameInput, tournamentFounderNameInput, tournamentStartTime, tournamentStartDate, tournamentDueDate);
-
-        System.out.println("New tournament created!"+
+        System.out.println("\nNew tournament created!"+
                 "\n\t Tournament Name: \t\t"+ tournamentNameInput +
                 "\n\t Tournament Founder: \t\t"+ tournamentFounderNameInput +
                 "\n\t Tournament Start Time: \t"+ tournamentStartTime +
                 "\n\t Tournament Start Date: \t\t"+ tournamentStartDate +
                 "\n\t Tournament Due Date: \t"+ tournamentDueDate);
-
-        // Data.saveData(tournament, null, null, null, null);
-        // Main.currentTournament = tournament;
     }
+        //LocalTime tournamentStartTime;
+//        while (true) {
+//            String tournamentStartTimeMsg = "Input time of day the tournament shall start\nEx. 18:00\n";
+//            String userTimeInput = UI.getUserInput(tournamentStartTimeMsg);
+//            if (isValidTime(userTimeInput)) {
+//                tournamentStartTime = LocalTime.parse(userTimeInput);
+//                break;
+//            } else {
+//                System.out.println("\nWrong time format! Try again!\n");
+//            }
+//        }
+
+        //LocalDate tournamentStartDate;
+//        while (true) {
+//            String tournamentStartDateMsg = "Input date the tournament shall start\nEx. 2021-01-30\n";
+//            String userDateInput = UI.getUserInput(tournamentStartDateMsg);
+//            if (isValidDate(userDateInput)) {
+//                tournamentStartDate = LocalDate.parse(userDateInput);
+//                break;
+//            } else {
+//                System.out.println("\nWrong date format! Try again!\n");
+//            }
+//        }
+
+        //LocalDate tournamentDueDate;
+//        while (true) {
+//            String tournamentStartDateMsg = "Input date the tournament due date\nEx. 2021-01-30\n";
+//            String userDateInput = UI.getUserInput(tournamentStartDateMsg);
+//            if (isValidDate(userDateInput)) {
+//                tournamentDueDate = LocalDate.parse(userDateInput);
+//                break;
+//            } else {
+//                System.out.println("\nWrong date format! Try again!\n");
+//            }
+//        }
+
+
 
     // Checks if the string inputted can be changed to integer, returns true if its possible
 //    public static boolean checkParsePossible(String str) {
@@ -184,20 +200,11 @@ public class UIData {
 
 
     // TEAM
-    // Creates a new team and adds it to Main.currentTeams + saves to txt file
     public static void createTeam()  {
-        // Team name
         String teamNameMsg = "Input name of team\n";
         String teamNameInput = UI.getUserInput(teamNameMsg);
 
-        // TODO: GET TEAMID FROM SQL
-        //Team team = new Team(-----TEAMID-----, teamNameInput, 0, 0, 0, 0, false);
-
-        //System.out.println("New team created!"+
-                //"\n\t Team Name: \t\t"+ teamNameInput);
-
-        //Main.teams.add(team);
-        //Data.saveData(null, null, Main.currentTeams, null, null);
+        Main.getIO().saveNewTeam(teamNameInput);
     }
 
     // PLAYER
@@ -210,59 +217,88 @@ public class UIData {
             String playerNameInput = UI.getUserInput(playerNameMsg);
 
             for (int i = 0; i < Main.teams.size(); i++) {
-                // TODO: ADD AMOUNT OF PLAYERS ON A TEAM
-                System.out.println("\n"+ Main.teams.get(i).getID() +"\t - \t"+ Main.teams.get(i).getName() +" = TODO (ADD AMOUNT OF PLAYERS ON TEAM)");
+                Team indexTeam = Main.teams.get(i);
+                String teamName = indexTeam.getName();
+
+                int amountOfPlayersOnTeam = 0;
+                for (Player player : Main.players) {
+                    if (player.getTeamID() == indexTeam.getID()) amountOfPlayersOnTeam++;
+                }
+
+                System.out.println("\n\tID : "+ indexTeam.getID() +"\t - \t"+ teamName +" = "+ amountOfPlayersOnTeam +" players on team");
             }
-            String joinTeamMsg = "\nInput the ID of the team the player should join\n";
-            String joinTeamInput = UI.getUserInput(joinTeamMsg);
 
-            // TODO: CHECK THAT AMOUNT OF PLAYERS ON A TEAM + NEW PLAYER IS LESS THAN OR EQUAL TO 6
+            String joinTeamInput;
+            while (true) {
+                String joinTeamMsg = "\nInput the ID of the team the player should join\n";
+                joinTeamInput = UI.getUserInput(joinTeamMsg);
 
-            // TODO: CREATE PLAYER - NEEDS PLAYERID FROM SQL AND TEAMID FROM SQL?
-            // Player player = new Player(-----PLAYER ID------, playerNameInput, ----TEAM ID---- )
+                try {Integer.parseInt(joinTeamInput); break;}
+                catch (Exception e) {System.out.println("\nInput is not a number!\nTry again!");}
+            }
+            Main.getIO().savePlayer(playerNameInput, Integer.parseInt(joinTeamInput));
         }
-
     }
 
     // MATCH
-//    public static void createMatch() {
-//        Main.matches.clear();
+    public static void createMatches() {
+        // Main.matches.clear();
 //
-//        if (Main.activeTeams.size() % 2 != 0) {
-//            System.out.println("Uneven amount of teams, fix yo shit");
-//        }
-//        else {
-//            Collections.shuffle(Main.activeTeams);     // Sorting teams randomly
-//
-//            // if tournament starts at 20:00 = there are 4 hours left in day
-//            // if there is a total 16 teams = 8 matches
-//            if (24 - Main.currentTournament.getTournamentStartTime() <= Main.activeTeams.size() / 2) {
-//                System.out.println("Tournament will run over multiple days");
-//                Main.currentTournament.setTournamentEndDayOfMonth(Main.currentTournament.getTournamentStartDayOfMonth() + 1);
-//            } else {
-//                System.out.println("Tournament can be completed in one day");
-//                Main.currentTournament.setTournamentEndDayOfMonth(Main.currentTournament.getTournamentStartDayOfMonth());
-//            }
-//
-//            int currentDayOfMonth = Main.currentTournament.getTournamentStartDayOfMonth();
-//            int matchTime = Main.currentTournament.getTournamentStartTime() - 1;
-//
-//            int counter = 0;
-//            for (int i = 0; i < Main.activeTeams.size(); i += 2) {
-//                // reset match time if time is greater than 24. Than calculate new time based off how many matches are left
-//                matchTime++;
-//                if (matchTime > 24) {
-//                    matchTime = 24 - ((Main.activeTeams.size()/2)- counter);
-//                    currentDayOfMonth++;
-//                }
-//                counter++;
-//                int dayOfMonth = currentDayOfMonth;
-//
-//                Match newMatch = new Match(Main.activeTeams.get(i).getName(), Main.activeTeams.get(i+1).getName(), matchTime, dayOfMonth);
-//                Main.matches.add(newMatch);
-//            }
-//
-//            Data.saveData(null, null, null, Main.matches, null);
-//        }
-//    }
+//        boolean teamSizeCorrect = false;
+//        if (Main.teams.size() == 2)
+//            teamSizeCorrect = true;
+
+        // TODO: TEST THIS!!!
+//        if (Main.teams.size() % 4 != 0 || Main.teams.size() != 2) {
+        if (Main.teams.size() % 4 != 0) {
+            System.out.println("\nAmount of teams must be divisible by 4!\n");
+            return;
+        }
+//        else teamSizeCorrect = true;
+
+//        if (teamSizeCorrect) {
+        else {
+            ArrayList<Team> localTeams = new ArrayList<>();
+            for (Team team : Main.teams) {
+                if (!team.getTeamKnockedOut()) {
+                    localTeams.add(team);
+                }
+            }
+            Collections.shuffle(localTeams);            // Sorting teams randomly
+
+            int amountOfMatches = localTeams.size() / 2;
+            int matchDurationMinutes = 30;
+
+            // get date and time from current matches, else get from tournament
+            LocalTime matchStartTime = Main.tournament.getTournamentStartTime().minusMinutes(matchDurationMinutes);
+            LocalDate matchStartDate = Main.tournament.getTournamentStartDate();
+            if (Main.matches.size() != 0) {
+                Match lastMatch = Main.matches.get(Main.matches.size() - 1);
+                matchStartTime = lastMatch.getMatchStartTime().plusMinutes(matchDurationMinutes);
+                matchStartDate = lastMatch.getMatchStartDate();
+            }
+
+            int teamCounter = 0;
+            for (int i = 0; i < amountOfMatches; i++) {
+
+                matchStartTime = matchStartTime.plusMinutes(matchDurationMinutes);
+                if (matchStartTime.isBefore(LocalTime.parse("01:00"))) {        // new day
+                    int amountOfMatchesLeft = amountOfMatches - i;
+                    int timeNeededForRemainingMatches = amountOfMatchesLeft * matchDurationMinutes;
+                    matchStartTime = LocalTime.parse("23:00").minusMinutes(timeNeededForRemainingMatches);
+
+                    matchStartDate = matchStartDate.plusDays(1);
+                }
+                Main.getIO().saveMatches(matchStartTime, matchStartDate,false);
+
+                int thisMatchID = Main.matches.get(Main.matches.size() - 1).getMatchID();
+                for (int j = 0; j < 2; j++) {
+                    int teamID = localTeams.get(teamCounter).getID();
+                    Main.getIO().saveNewTeamMatches(thisMatchID, teamID, 0);
+                    teamCounter++;
+                }
+            }
+            System.out.println("Matches generated!");
+        }
+    }
 }

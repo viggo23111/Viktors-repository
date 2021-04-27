@@ -10,4 +10,20 @@ public class TeamMatches {
         this.teamID = teamID;
         this.score = score;
     }
+
+    public int getID() {
+        return ID;
+    }
+
+    public int getMatchID() {
+        return matchID;
+    }
+
+    public int getTeamID() {
+        return teamID;
+    }
+
+    public int getScore() {
+        return score;
+    }
 }
