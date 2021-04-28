@@ -1,8 +1,7 @@
 import java.io.File;
-import java.util.Arrays;
+import java.time.*;
 import java.util.Collections;
 import java.util.Scanner;
-import java.util.ArrayList;
 
 public class UI {
 
@@ -14,26 +13,57 @@ public class UI {
     }
 
     public static void welcomeMessage() {
-        // TODO: CLEAR OR DROP DATA IF USER REPLIES NO TO SECOND QUESTION
-        // TODO: PUT IN LOOP TO MAKE SURE USER INPUTS CORRECT ANSWER
-
         System.out.println("\nWelcome to Table Football tournament manager!\n");
-        String dataTypeMsg = "\nWould you like to use SQL? (y/n) ";
-        String dataTypeInput = getUserInput(dataTypeMsg);
 
-        if (dataTypeInput.equalsIgnoreCase("y")) Main.useSQL = true;
-        else Main.useSQL = false;
+        boolean alwaysTrue = true;
+        while(alwaysTrue) {
+            String dataTypeMsg = "\nWould you like to use SQL? (y/n) ";
+            String dataTypeInput = getUserInput(dataTypeMsg);
 
-        String loadDataMsg = "\nWould you like to load existing data? (y/n) ";
-        String loadDataInput = getUserInput(loadDataMsg);
+            if (dataTypeInput.equalsIgnoreCase("y")) {
+                Main.useSQL = true;
+                break;
+            }
+            else if (dataTypeInput.equalsIgnoreCase("n")) {
+                Main.useSQL = false;
+                break;
+            }
+            else {
+                System.out.println("Invalid input. Try again!");
+            }
+        }
 
-        if (loadDataInput.equalsIgnoreCase("y")) {
-            Main.getIO().loadData("playerData");
-            Main.getIO().loadData("teamsData");
-            Main.getIO().loadData("tournamentData");
-            Main.getIO().loadData("matchesData");
-            Main.getIO().loadData("teamMatchesData");
-        } else System.out.println("\nNo data will be loaded!\n");
+        while(alwaysTrue) {
+            String loadDataMsg = "\nWould you like to load existing data? (y/n) ";
+            String loadDataInput = getUserInput(loadDataMsg);
+
+            if (loadDataInput.equalsIgnoreCase("y")) {
+                Main.getIO().loadData("playerData");
+                Main.getIO().loadData("teamsData");
+                Main.getIO().loadData("tournamentData");
+                Main.getIO().loadData("matchesData");
+                Main.getIO().loadData("teamMatchesData");
+                break;
+            }
+            else if (loadDataInput.equalsIgnoreCase("n")){
+                System.out.println("\nData has been wiped and won't be loaded!\n");
+
+                if (Main.useSQL) {
+                    DBConnector.wipeSQL();
+                }
+                else {
+                    UIData.deleteDataFile(new File("matchesData.txt"));
+                    UIData.deleteDataFile(new File("playerData.txt"));
+                    UIData.deleteDataFile(new File("teamMatchesData.txt"));
+                    UIData.deleteDataFile(new File("teamsData.txt"));
+                    UIData.deleteDataFile(new File("tournamentData.txt"));
+                }
+                break;
+            }
+            else {
+                System.out.println("Invalid input. Try again!");
+            }
+        }
     }
 
     // MENU FUNCTIONS
@@ -48,15 +78,55 @@ public class UI {
                     "\n\t6 - Start Next Tournament Stage\n";
             String menuMainInput = getUserInput(menuMainStr);
             switch (menuMainInput) {
-                case "1" -> UIData.createTournament();
+                case "1" -> checkForExistingTournament();
                 case "2" -> UIData.createTeam();
                 case "3" -> UIData.createPlayer();
                 case "4" -> menuTeamRankings();
-                case "5" -> UIData.createMatches();
-//                case "6" -> runTournament();
+                case "5" -> checkForExistingMatches();
+                case "6" -> runTournament();
 //                case "9" -> debugData();
                 default -> System.out.println("Invalid input");
             }
+        }
+    }
+
+    public static void checkForExistingTournament() {
+        if (Main.tournament != null) {
+            String tournamentConfirmMsg = "Are you sure you want to create a new tournament while one already exists? (y/n)";
+            String tournamentConfirmInput = getUserInput(tournamentConfirmMsg);
+            if (tournamentConfirmInput.equalsIgnoreCase("y")) {
+                if (Main.useSQL) {
+                    DBConnector.wipeSQL();
+                } else {
+                    UIData.deleteDataFile(new File("matchesData.txt"));
+                    UIData.deleteDataFile(new File("playerData.txt"));
+                    UIData.deleteDataFile(new File("teamMatchesData.txt"));
+                    UIData.deleteDataFile(new File("teamsData.txt"));
+                    UIData.deleteDataFile(new File("tournamentData.txt"));
+                }
+                UIData.createTournament();
+            }
+            else {
+                System.out.println("u are retard");
+            }
+        } else {
+            UIData.createTournament();
+        }
+    }
+
+    public static void checkForExistingMatches() {
+        int incompleteMatches=0;
+        for (Match match : Main.matches) {
+            if (match.getMatchDone() == false) {
+                incompleteMatches++;
+            }
+        }
+
+        if (incompleteMatches == 0) {
+            UIData.createMatches();
+        } else {
+            String confirmDeleteMatches = "\nYou already have matches! These must be finished first!";
+            System.out.println(confirmDeleteMatches);
         }
     }
 
@@ -87,7 +157,7 @@ public class UI {
 
     // USER FUNCTIONS
     public static void showAllTeams() {
-        System.out.println("Displaying all teams");
+        System.out.println("\nDisplaying all teams");
         for (int i = 0; i < Main.teams.size(); i++) {
             int indexTeamID = Main.teams.get(i).getID();
 
@@ -111,8 +181,6 @@ public class UI {
         // Sorting first by player points, if same points, then sorts by player point score
         Main.teams.sort(new PointScoreSorter());
         Collections.reverse(Main.teams);
-
-        // TODO: ADD TEAM ID
 
         for (int i = 0; i < Main.teams.size(); i++) {
             System.out.println("\nTeam ID: "+ Main.teams.get(i).getID() +
@@ -209,124 +277,148 @@ public class UI {
 
 
     public static void runTournament() {
-        if (Main.matches.size() == 0)
+        if (Main.tournament == null) {
+            System.out.println("You must create a tournament before starting it!");
+        }
+        Main.matchesNotDone.clear();
+        for (Match match : Main.matches) {
+            if (!match.getMatchDone()) {
+                Main.matchesNotDone.add(match);
+            }
+        }
+
+        if (Main.matchesNotDone.size() == 0)
             System.out.println("No matches are available");
 
-        for (Match match : Main.matches) {
+        for (Match match : Main.matchesNotDone) {
             if (match.getMatchDone()) {
+                System.out.println("Match is done");
                 continue;                   // match already finished!
             }
-
             int indexMatchID = match.getMatchID();
-
             int[] indexTeamsIDs = getTeamIDsFromMatchID(indexMatchID);
             String[] indexTeamNames = getTeamNamesFromTeamIDs(indexTeamsIDs);
-
-            // TODO: MAYBE ADD getNestMatchTime()
-
-            String indexMatchStr = "\nMatch ID: "+ match.getMatchID()+
-                    "\n\t"+ indexTeamNames[0] +" vs "+ indexTeamNames[1];
+            String indexMatchStr = "\nMatch ID: " + indexMatchID +
+                    "\nStarts at: " + match.getMatchStartTime() +
+                    " on " + match.getMatchStartDate() +
+                    "\t\t\tType -1 to exit Tournament stage" +
+                    "\n\t" + indexTeamNames[0] + " vs " + indexTeamNames[1];
             System.out.println(indexMatchStr);
 
-            String team1ScoreMsg = "\n\tInput score for "+ indexTeamNames[0];
+
+            String team1ScoreMsg = "\n\tInput score for " + indexTeamNames[0] + "\n";
             int team1Goals = stringToInt(team1ScoreMsg);
+            if (team1Goals == -1) {
+                return;
+            }
 
-            String team2ScoreMsg = "\n\tInput score for "+ indexTeamNames[1];
+            String team2ScoreMsg = "" +
+                    "\tInput score for " + indexTeamNames[1] + "\n";
             int team2Goals = stringToInt(team2ScoreMsg);
-
-
-
-        }
-/*
-
-
-            Team winnerTeam;
-            int winnerTeamGoalsInt;
-            Team loserTeam;
-            int loserTeamGoalsInt;
-
-            if (team1GoalsInt >= team2GoalsInt) {
-                winnerTeam = team1;
-                winnerTeamGoalsInt = team1GoalsInt;
-                loserTeam = team2;
-                loserTeamGoalsInt = team2GoalsInt;
-            }
-            else {
-                winnerTeam = team2;
-                winnerTeamGoalsInt = team2GoalsInt;
-                loserTeam = team1;
-                loserTeamGoalsInt = team1GoalsInt;
+            if (team2Goals == -1) {
+                return;
             }
 
-            matchDone(winnerTeam,loserTeam,winnerTeamGoalsInt,loserTeamGoalsInt);
+            int winnerTeamID;
+            int winnerTeamPoints;
+            int winnerTeamPointScore;
 
-            Main.matches.remove(currentMatch);
-            Data.saveData(null, null, null, Main.matches, null);
+            int loserTeamID;
+            int loserTeamPoints;
+            int loserTeamPointScore;
 
-            Main.oldMatches.add(currentMatch);
-            Data.saveData(null, null, null, null, Main.oldMatches);
+            if (team1Goals >= team2Goals) {
+                winnerTeamID = indexTeamsIDs[0];
+                winnerTeamPoints = team1Goals;
+                winnerTeamPointScore = team1Goals - team2Goals;
+
+                loserTeamID = indexTeamsIDs[1];
+                loserTeamPoints = team2Goals;
+                loserTeamPointScore = team2Goals - team1Goals;
+            } else {
+                winnerTeamID = indexTeamsIDs[1];
+                winnerTeamPoints = team2Goals;
+                winnerTeamPointScore = team2Goals - team1Goals;
+
+                loserTeamID = indexTeamsIDs[0];
+                loserTeamPoints = team1Goals;
+                loserTeamPointScore = team1Goals - team2Goals;
+            }
+
+            // Save existing team
+            Team winnerTeamObject = Main.teams.get(0);      // throws error if not initialized
+            Team loserTeamObject = Main.teams.get(0);
+            for (Team team : Main.teams) {
+                if (team.getID() == winnerTeamID) {
+                    winnerTeamObject = team;
+                }
+                if (team.getID() == loserTeamID) {
+                    loserTeamObject = team;
+                }
+            }
+
+            int newWinnerPoints = winnerTeamObject.getPoints() + 2;
+            int newWinnerPointScore = winnerTeamObject.getPointScore() + winnerTeamPointScore;
+            int newWinnerGamesWon = winnerTeamObject.getGamesWon() + 1;
+            int newWinnerGamesPlayed = winnerTeamObject.getGamesPlayed() + 1;
+
+            int newLoserPoints = loserTeamObject.getPoints();
+            int newLoserPointScore = loserTeamObject.getPointScore() + loserTeamPointScore;
+            int newLoserGamesWon = loserTeamObject.getGamesWon();
+            int newLoserGamesPlayed = loserTeamObject.getGamesPlayed() + 1;
+
+            Main.getIO().saveExistingTeam(winnerTeamID, newWinnerPoints, newWinnerPointScore, newWinnerGamesWon, newWinnerGamesPlayed, false);
+            Main.getIO().saveExistingTeam(loserTeamID, newLoserPoints, newLoserPointScore, newLoserGamesWon, newLoserGamesPlayed, true);
+
+            // Save existing team matches
+            TeamMatches winnerTeamMatch = Main.teamMatches.get(0);    // throws error if not initialized
+            TeamMatches loserTeamMatch = Main.teamMatches.get(0);    // throws error if not initialized
+            for (TeamMatches tm : Main.teamMatches) {
+                if (tm.getMatchID() == indexMatchID && tm.getTeamID() == winnerTeamID) {
+                    winnerTeamMatch = tm;
+                }
+                if (tm.getMatchID() == indexMatchID && tm.getTeamID() == loserTeamID) {
+                    loserTeamMatch = tm;
+                }
+            }
+
+            int newWinnerTeamMatchID = winnerTeamMatch.getID();
+            int newLoserTeamMatchID = loserTeamMatch.getID();
+
+            Main.getIO().saveExistingTeamMatches(newWinnerTeamMatchID, indexMatchID, winnerTeamID, winnerTeamPoints);
+            Main.getIO().saveExistingTeamMatches(newLoserTeamMatchID, indexMatchID, loserTeamID, loserTeamPoints);
+
+            // Save existing Match
+            LocalTime newMatchStartTime = match.getMatchStartTime();
+            LocalDate newMatchStartDate = match.getMatchStartDate();
+
+            Main.getIO().saveExistingMatches(indexMatchID, newMatchStartTime, newMatchStartDate, true);
         }
-        UIData.deleteDataFile("Matches", new File("matchesData.txt"));
-        UIData.deleteDataFile("Teams", new File("teamsData.txt"));
-        Data.saveData(null, null, Main.currentTeams, null, null);
 
-
-        System.out.println("\nCURRENT STAGE OF TOURNAMENT DONE!\n");
-        if (Main.activeTeams.size() == 1) {
-            System.out.println("\uD83C\uDFC6 " +  Main.activeTeams.get(0).getName() +" HAS WON THE TOURNAMENT \uD83C\uDFC6");
-        }*/
-    }
-
-    public static void matchDone(Team winnerTeam, Team loserTeam, int winnerGoals, int loserGoals) {
-        // Increase games played and games won
-        winnerTeam.setGamesPlayed(winnerTeam.getGamesPlayed() + 1);
-        winnerTeam.setGamesWon(winnerTeam.getGamesWon() + 1);
-        loserTeam.setGamesPlayed(loserTeam.getGamesPlayed() + 1);
-
-        // Add points to teams
-        winnerTeam.setPoints(winnerTeam.getPoints() + 2);
-        winnerTeam.setPointScore(winnerTeam.getPointScore() + winnerGoals - loserGoals);
-        loserTeam.setPointScore(loserTeam.getPointScore() + loserGoals - winnerGoals);
-
-        // Knock loser out of tournament
-        loserTeam.teamHasBeenKnockedOut();
-//        Main.activeTeams.add(winnerTeam);
-    }
-
-   public static Team findTeam(String name) {
-       Team teamFound;
-        for (int i = 0; i < Main.teams.size(); i++) {
-           if (Main.teams.get(i).getName().equals(name)) {
-               teamFound = Main.teams.get(i);
-               return teamFound;
-           }
+        System.out.println("\nCurrent stage of tournament done!\n");
+        int activeTeams = 0;
+        Team remainingTeam = Main.teams.get(0);
+        for (Team team : Main.teams) {
+            if (team.getTeamKnockedOut() == false) {
+                remainingTeam = team;
+                activeTeams++;
+            }
         }
-        return null;
+
+        if (activeTeams == 1) {
+            System.out.println("\uD83C\uDFC6 " + remainingTeam.getName() + " HAS WON THE '"+ Main.tournament.getTournamentName() +" \uD83C\uDFC6");
+            String playerWinnerStr = "Congratulations to: \n\t";
+            for (Player player : Main.players) {
+                if (remainingTeam.getID() == player.getTeamID()) {
+                    playerWinnerStr += player.getPlayerName() + " ";
+                }
+            }
+            System.out.println(playerWinnerStr);
+        } else {
+            UIData.createMatches();
+            runTournament();
+        }
     }
-//
-//    public static void debugData() {
-//        System.out.println("\nCURRENT TEAMS\n");
-//        for (int i = 0; i < Main.currentTeams.size(); i++) {
-//            System.out.println(Main.currentTeams.get(i).getName());
-//        }
-//        System.out.println("================");
-//
-//        System.out.println("\nACTIVE TEAMS\n");
-//        for (int i = 0; i < Main.activeTeams.size(); i++) {
-//            System.out.println(Main.activeTeams.get(i).getName());
-//        }
-//        System.out.println("================");
-//
-//        System.out.println("\nMATCHES\n");
-//        for (int i = 0; i < Main.matches.size(); i++) {
-//            System.out.println(Main.matches.get(i).getTeam1() + Main.matches.get(i).getTeam2());
-//        }
-//        System.out.println("================");
-//
-//        System.out.println("\nOLD MATCHES\n");
-//        for (int i = 0; i < Main.oldMatches.size(); i++) {
-//            System.out.println(Main.oldMatches.get(i).getTeam1() + " vs " + Main.oldMatches.get(i).getTeam2());
-//        }
-//    }
+
 }
 

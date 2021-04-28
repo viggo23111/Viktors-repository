@@ -5,21 +5,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.time.*;
 import java.time.format.ResolverStyle;
-// import java.util.concurrent.ExecutionException;
 
 public class UIData {
-
-    // Check for existing data
-//    public static void checkData(String dataType, String fileName) {
-//        if (loadDataInterface(dataType, fileName))
-//            Data.loadData(fileName);
-//        else if (dataType.equals("Tournament"))
-//            createTournament();
-//        else if (dataType.equals("Team"))
-//            createTeam();
-////        else if (dataType.equals("Match"))
-////            createMatch();
-//    }
 
     // Checks if data of inputted type and filename exists, returns true if user would like to load existing data
     public static boolean loadDataInterface(String dataType, String fileName) {
@@ -36,7 +23,6 @@ public class UIData {
                 }
                 else if (dataExistsInput.equals("n")) {
                     // Existing data exists, but user would like to create new
-                    deleteDataFile(dataFile);
                     return false;
                 }
                 else {
@@ -52,40 +38,14 @@ public class UIData {
     }
 
     // Deletes old txt files
-    //public static void deleteDataFile(String dataType, File dataFile) {
     public static void deleteDataFile(File dataFile) {
         try {
             FileWriter writer = new FileWriter(dataFile);
             writer.write("");
             writer.close();
             System.out.println("Wiped - " + dataFile.getName());
-            // System.out.println("Deleted previous "+ dataType +" data");
-        } catch (IOException e) {
-            // System.out.println("Failed to delete previous "+ dataType +" data");
-        }
+        } catch (IOException e) {}
     }
-
-
-
-//    public static void loadDataIfExists(String fileName) {
-//        File dataFile = new File(fileName);
-//        if (dataFile.exists()) {
-//            Data.loadData(fileName);
-//        } else {
-//            System.out.println(fileName + "does not exist!");
-//        }
-//    }
-
-
-    // FOUNDER
-    // Creates a new founder and returns it + saves to txt file
-//    public static void createFounder() {
-//        String founderName = "Input the name of the tournament organizer / founder\n";
-//        String founderNameInput = UI.getUserInput(founderName);
-//        Founder founder = new Founder(founderNameInput);
-//        Data.saveData(null, founder, null, null, null);
-//        Main.currentFounder = founder;
-//    }
 
     public static boolean isValidDate(String dateInput) {
         boolean valid = false;
@@ -144,59 +104,12 @@ public class UIData {
         Main.getIO().saveTournament(tournamentNameInput, tournamentFounderNameInput, tournamentStartTime, tournamentStartDate, tournamentDueDate);
 
         System.out.println("\nNew tournament created!"+
-                "\n\t Tournament Name: \t\t"+ tournamentNameInput +
+                "\n\t Tournament Name: \t\t\t"+ tournamentNameInput +
                 "\n\t Tournament Founder: \t\t"+ tournamentFounderNameInput +
                 "\n\t Tournament Start Time: \t"+ tournamentStartTime +
-                "\n\t Tournament Start Date: \t\t"+ tournamentStartDate +
-                "\n\t Tournament Due Date: \t"+ tournamentDueDate);
+                "\n\t Tournament Start Date: \t"+ tournamentStartDate +
+                "\n\t Tournament Due Date: \t\t"+ tournamentDueDate);
     }
-        //LocalTime tournamentStartTime;
-//        while (true) {
-//            String tournamentStartTimeMsg = "Input time of day the tournament shall start\nEx. 18:00\n";
-//            String userTimeInput = UI.getUserInput(tournamentStartTimeMsg);
-//            if (isValidTime(userTimeInput)) {
-//                tournamentStartTime = LocalTime.parse(userTimeInput);
-//                break;
-//            } else {
-//                System.out.println("\nWrong time format! Try again!\n");
-//            }
-//        }
-
-        //LocalDate tournamentStartDate;
-//        while (true) {
-//            String tournamentStartDateMsg = "Input date the tournament shall start\nEx. 2021-01-30\n";
-//            String userDateInput = UI.getUserInput(tournamentStartDateMsg);
-//            if (isValidDate(userDateInput)) {
-//                tournamentStartDate = LocalDate.parse(userDateInput);
-//                break;
-//            } else {
-//                System.out.println("\nWrong date format! Try again!\n");
-//            }
-//        }
-
-        //LocalDate tournamentDueDate;
-//        while (true) {
-//            String tournamentStartDateMsg = "Input date the tournament due date\nEx. 2021-01-30\n";
-//            String userDateInput = UI.getUserInput(tournamentStartDateMsg);
-//            if (isValidDate(userDateInput)) {
-//                tournamentDueDate = LocalDate.parse(userDateInput);
-//                break;
-//            } else {
-//                System.out.println("\nWrong date format! Try again!\n");
-//            }
-//        }
-
-
-
-    // Checks if the string inputted can be changed to integer, returns true if its possible
-//    public static boolean checkParsePossible(String str) {
-//        try {
-//            Integer.parseInt(str);
-//            return true;
-//        } catch(Exception e) {
-//            return false;
-//        }
-//    }
 
 
     // TEAM
@@ -205,6 +118,7 @@ public class UIData {
         String teamNameInput = UI.getUserInput(teamNameMsg);
 
         Main.getIO().saveNewTeam(teamNameInput);
+        System.out.println("\nNew team created named: "+ teamNameInput);
     }
 
     // PLAYER
@@ -237,30 +151,20 @@ public class UIData {
                 catch (Exception e) {System.out.println("\nInput is not a number!\nTry again!");}
             }
             Main.getIO().savePlayer(playerNameInput, Integer.parseInt(joinTeamInput));
+            System.out.println("New player created! \tPlayer '"+ playerNameInput +"' has joined team ID : "+ joinTeamInput);
         }
     }
 
     // MATCH
     public static void createMatches() {
-        // Main.matches.clear();
-//
-//        boolean teamSizeCorrect = false;
-//        if (Main.teams.size() == 2)
-//            teamSizeCorrect = true;
-
-        // TODO: TEST THIS!!!
-//        if (Main.teams.size() % 4 != 0 || Main.teams.size() != 2) {
         if (Main.teams.size() % 4 != 0) {
             System.out.println("\nAmount of teams must be divisible by 4!\n");
             return;
         }
-//        else teamSizeCorrect = true;
-
-//        if (teamSizeCorrect) {
         else {
             ArrayList<Team> localTeams = new ArrayList<>();
             for (Team team : Main.teams) {
-                if (!team.getTeamKnockedOut()) {
+                if (team.getTeamKnockedOut() == false) {
                     localTeams.add(team);
                 }
             }
@@ -289,7 +193,7 @@ public class UIData {
 
                     matchStartDate = matchStartDate.plusDays(1);
                 }
-                Main.getIO().saveMatches(matchStartTime, matchStartDate,false);
+                Main.getIO().saveNewMatches(matchStartTime, matchStartDate,false);
 
                 int thisMatchID = Main.matches.get(Main.matches.size() - 1).getMatchID();
                 for (int j = 0; j < 2; j++) {

@@ -1,9 +1,7 @@
 import java.io.*;
-import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Data implements IO{
@@ -73,8 +71,6 @@ public class Data implements IO{
                     LocalDate tournamentDueDate = LocalDate.parse(separatedValues[4], dateFormatter);
                     Tournament newTournament = new Tournament(name, founderName, tournamentStartTime, tournamentStartDate, tournamentDueDate);
                     Main.tournament = newTournament;
-
-                    System.out.println(tournamentStartTime);
                 }
             }
         }
@@ -89,7 +85,7 @@ public class Data implements IO{
             }
             if (scanner != null) {
                 while (scanner.hasNextLine()) {
-                    String[] separatedValues = scanner.nextLine().split("\\|");
+                    String[] separatedValues = scanner.nextLine().split(",");
                     int id = Integer.parseInt(separatedValues[0]);
                     LocalDate matchStartDate = LocalDate.parse(separatedValues[1]);
                     LocalTime matchStartTime = LocalTime.parse(separatedValues[2]);
@@ -140,7 +136,6 @@ public class Data implements IO{
             FileWriter writer = new FileWriter("playerData.txt", true);
             writer.write(playerDataStr);
             writer.close();
-            System.out.println("Saved Player Data!");
 
             Main.players.add(new Player(ID, name, teamID));
         } catch (IOException e) {
@@ -171,7 +166,6 @@ public class Data implements IO{
             FileWriter writer = new FileWriter("teamsData.txt", true);
             writer.write(teamDataStr);
             writer.close();
-            System.out.println("Saved new Team Data!");
 
             Main.teams.add(new Team(ID, name, points, pointScore, gamesWon, gamesPlayed, false));
         } catch (IOException e) {
@@ -200,7 +194,6 @@ public class Data implements IO{
             while (scanner.hasNextLine()) {
                 String line=scanner.nextLine();
                 String[] colonSeparatedValues = line.split(":");
-             //   System.out.println(Integer.parseInt(colonSeparatedValues[0]));
                 if (teamID == Integer.parseInt(colonSeparatedValues[0])){
                     oldTeamData = line;
                     newTeamData = String.format("%d:%s:%d:%d:%d:%d:%b",teamID,teamName,points, pointScore,gamesWon,gamesPlayed,knockedOut);
@@ -221,7 +214,6 @@ public class Data implements IO{
             FileWriter writer = new FileWriter("tournamentData.txt", true);
             writer.write(String.valueOf(tournamentDataSB));
             writer.close();
-            System.out.println("Saved Tournament Data!");
             Tournament newTournament = new Tournament(name, founderName, tournamentStartTime, tournamentStartDate, tournamentDueDate);
             Main.tournament = newTournament;
         } catch (IOException e) {
@@ -230,7 +222,7 @@ public class Data implements IO{
         }
     }
 
-    public void saveMatches(LocalTime matchStartTime, LocalDate matchStartDate, boolean done) {
+    public void saveNewMatches(LocalTime matchStartTime, LocalDate matchStartDate, boolean done) {
         int ID = 1;
         int matchArraySize = Main.matches.size();
         if (matchArraySize != 0) {
@@ -239,19 +231,44 @@ public class Data implements IO{
         }
 
         StringBuilder matchData = new StringBuilder();
-        String matchDataStr = ID + "|" + matchStartDate + "|" + matchStartTime + "|" + done +"\n";
+        String matchDataStr = ID + "," + matchStartDate + "," + matchStartTime + "," + done +"\n";
         matchData.append(matchDataStr);
 
         try {
             FileWriter writer = new FileWriter("matchesData.txt", true);
             writer.write(matchDataStr);
             writer.close();
-            System.out.println("Saved new Match Data!");
 
             Main.matches.add(new Match(ID, matchStartTime, matchStartDate,done));
         } catch (IOException e) {
             System.out.println("An error occurred while trying to save data!");
             e.printStackTrace();
+        }
+    }
+
+    public void saveExistingMatches(int matchID, LocalTime matchStartTime, LocalDate matchStartDate, boolean done) {
+        File file = new File("matchesData.txt");
+        String oldMatchesData="";
+        String newMatchesData="";
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (scanner != null) {
+            while (scanner.hasNextLine()) {
+                String line=scanner.nextLine();
+                String[] separatedValues = line.split(",");
+                if (matchID == Integer.parseInt(separatedValues[0])){
+                    oldMatchesData = line;
+                    newMatchesData = matchID + "," + matchStartDate + "," + matchStartTime + "," + done;
+                    modifyFile("matchesData.txt", oldMatchesData, newMatchesData);
+                    break;
+                }
+            }
+            Main.matches.clear();
+            loadData("matchesData");
         }
     }
 
@@ -271,7 +288,6 @@ public class Data implements IO{
             FileWriter writer = new FileWriter("teamMatchesData.txt", true);
             writer.write(teamMatchesDataStr);
             writer.close();
-            System.out.println("Saved new Team Match Data!");
 
             Main.teamMatches.add(new TeamMatches(ID,matchID,teamID,score));
         } catch (IOException e) {
@@ -294,14 +310,10 @@ public class Data implements IO{
             while (scanner.hasNextLine()) {
                 String line=scanner.nextLine();
                 String[] colonSeparatedValues = line.split(":");
-                //   System.out.println(Integer.parseInt(colonSeparatedValues[0]));
                 if (teamMatchID == Integer.parseInt(colonSeparatedValues[0])){
                     oldTeamMatchesData = line;
                     newTeamMatchesData = String.format("%d:%d:%d:%d",teamMatchID,matchID,teamID, score);
                     modifyFile("teamMatchesData.txt",oldTeamMatchesData,newTeamMatchesData);
-                    System.out.println("MODIFIED TEAM MATCH DATA!");
-
-                    // TODO: CHANGE MAIN OBJECT!
                     break;
                 }
             }

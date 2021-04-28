@@ -1,7 +1,4 @@
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.sql.*;
-import java.util.Scanner;
 import java.time.*;
 
 public class DBConnector implements IO {
@@ -44,12 +41,10 @@ public class DBConnector implements IO {
                         int teamID = rs.getInt("team_id");
                         Player newPlayer = new Player(id, name, teamID);
                         Main.players.add(newPlayer);
-                        // System.out.println("Player ID : "+ id +"\t Name : "+ name +"\tTeam ID : ");
                     }
                     try {
                         rs.close();
-                    } catch (SQLException e) {
-                    }
+                    } catch (SQLException e) {}
                 }
             }
 
@@ -69,7 +64,6 @@ public class DBConnector implements IO {
                         boolean knockedOut = rs.getBoolean("knocked_out");
                         Team newTeam = new Team(id, name, points, pointScore, gamesWon, gamesPlayed, knockedOut);
                         Main.teams.add(newTeam);
-                        //System.out.println("TEAM ID : "+ id +"\t Name : "+ name +"\tPoints : "+points+"");
                     }
                     try {
                         rs.close();
@@ -91,7 +85,6 @@ public class DBConnector implements IO {
                         LocalDate tournamentDueDate = rs.getDate("due_date").toLocalDate();
                         Tournament newTournament = new Tournament(name, founderName, tournamentStartTime, tournamentStartDate, tournamentDueDate);
                         Main.tournament = newTournament;
-                        System.out.println("Tournament ID : " + id + "\t Name : " + name + "\tfounder name : " + founderName + "");
                     }
                     try {
                         rs.close();
@@ -109,7 +102,6 @@ public class DBConnector implements IO {
                         LocalTime matchStartTime = rs.getTime("start_time").toLocalTime();
                         boolean done = rs.getBoolean("done");
                         Match newMatch = new Match(id, matchStartTime, matchStartDate,done);
-                        System.out.println("Loaded match \tID : " + id + "\t\tStart Time : " + matchStartTime + "\t\tStart date : " + matchStartDate);
                         Main.matches.add(newMatch);
                     }
                 }
@@ -124,7 +116,6 @@ public class DBConnector implements IO {
                         int teamID = rs.getInt("team_id");
                         int score = rs.getInt("score");
                         TeamMatches newTeamMatch = new TeamMatches(id, matchID, teamID, score);
-                        System.out.println("Loaded team match \tID : " + id + "\tMatch ID : " + matchID + "\tTeam ID : " + teamID + "\tScore : " + score);
                         Main.teamMatches.add(newTeamMatch);
                     }
                 }
@@ -176,7 +167,7 @@ public class DBConnector implements IO {
                     " WHERE id = " + teamID + ";";
         dbQuery(sql, true);
         Main.teams.clear();
-        loadData("teamData");
+        loadData("teamsData");
     }
 
     public void saveTournament(String name, String founderName, LocalTime tournamentStartTime, LocalDate tournamentStartDate, LocalDate tournamentDueDate) {
@@ -194,10 +185,9 @@ public class DBConnector implements IO {
         dbQuery(sql, true);
         Tournament newTournament = new Tournament(name, founderName, tournamentStartTime, tournamentStartDate, tournamentDueDate);
         Main.tournament = newTournament;
-        // String sql = "INSERT INTO tournament(id, name, founder_name, start_date, start_time, due_date)" + "VALUES(?,?,?,?,?,?)";
     }
 
-    public void saveMatches(LocalTime matchStartTime, LocalDate matchStartDate, boolean done) {
+    public void saveNewMatches(LocalTime matchStartTime, LocalDate matchStartDate, boolean done) {
         int ID = 0;
         try {ID = selectMaxID("matches") + 1;}
         catch (SQLException e) {}
@@ -206,6 +196,20 @@ public class DBConnector implements IO {
         dbQuery(sql,true);
         Match newMatch = new Match(ID, matchStartTime, matchStartDate,done);
         Main.matches.add(newMatch);
+    }
+
+    @Override
+    public void saveExistingMatches(int matchID, LocalTime matchStartTime, LocalDate matchStartDate, boolean done) {
+        int matchDone=0;
+        if (done){
+            matchDone=1;
+        }
+        String sql = "UPDATE tournament.matches SET " +
+                "done = " + matchDone +
+                " WHERE id = " + matchID + ";";
+        dbQuery(sql, true);
+        Main.matches.clear();
+        loadData("matchesData");
     }
 
     public void saveNewTeamMatches(int matchID, int teamID, int score) {
@@ -223,7 +227,7 @@ public class DBConnector implements IO {
     }
 
     public void saveExistingTeamMatches(int teamMatchID, int matchID, int teamID, int score) {
-        String sql = "UPDATE tournament.team SET " +
+        String sql = "UPDATE tournament.team_matches SET " +
                 "match_id = " + matchID +
                 ",team_id = " + teamID +
                 ",score = " + score +
@@ -231,6 +235,31 @@ public class DBConnector implements IO {
         dbQuery(sql, true);
         Main.teamMatches.clear();
         loadData("teamMatchesData");
+    }
+
+    public static void wipeSQL() {
+        dbQueryTruncate("DELETE FROM team_matches;");
+        dbQueryTruncate("DELETE FROM player;");
+        dbQueryTruncate("DELETE FROM tournament_data;");
+        dbQueryTruncate("DELETE FROM team;");
+        dbQueryTruncate("DELETE FROM matches;");
+        System.out.println("Data have been deleted");
+    }
+
+    //Custom function for truncating (static issue)
+    public static void dbQueryTruncate(String query) {
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        // Open a connection to the DB
+        try {
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            stmt = conn.createStatement();
+            stmt.executeUpdate(query);
+        } catch (Exception se) {
+            se.printStackTrace();
+        }
+        return;
     }
 }
 
