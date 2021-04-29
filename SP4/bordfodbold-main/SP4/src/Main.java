@@ -17,6 +17,10 @@ public class Main {
     public static void main(String[] args) throws SQLException {
         UI.welcomeMessage();
         UI.menuMain();
+
+        /* TEST SQL VIEWS*/
+        // DBConnector.testPlayerView();
+        // DBConnector.testTeamMatchesView();
     }
 
     public static IO getIO() {

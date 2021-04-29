@@ -6,7 +6,6 @@ public class DBConnector implements IO {
     static final String USER = "root";
     static final String PASS = "Datamatiker123"; //ENV :(
 
-    //In case we need a custom query; saveData() and loadData() will be used in most cases.
     public ResultSet dbQuery(String query, boolean update) {
         Connection conn = null;
         Statement stmt = null;
@@ -27,7 +26,6 @@ public class DBConnector implements IO {
         return null;
     }
 
-
     public void loadData(String data) {
         try {
             if (data.equals("playerData")) {
@@ -47,8 +45,6 @@ public class DBConnector implements IO {
                     } catch (SQLException e) {}
                 }
             }
-
-
 
             if (data.equals("teamsData")) {
                 ResultSet rs = dbQuery("SELECT * FROM team", false);
@@ -260,6 +256,60 @@ public class DBConnector implements IO {
             se.printStackTrace();
         }
         return;
+    }
+
+    public static void testPlayerView() throws SQLException {
+        ResultSet rs = dbQueryViewTest("SELECT * FROM player_view", false);
+        if (rs != null) {
+            while (rs.next()) {
+                //Retrieve by column name
+                int player_id = rs.getInt("player_id");
+                String player_name = rs.getString("player_name");
+                int team_id = rs.getInt("team_id");
+                String team_name = rs.getString("team_name");
+                System.out.println("Shows all player data.");
+                System.out.println("Player ID: " + player_id + " Player name: " + player_name + " Team ID: " + team_id + " Team name: " + team_name);
+            }
+        }
+    }
+
+    public static void testTeamMatchesView() throws SQLException {
+        ResultSet rs = dbQueryViewTest("SELECT * FROM tournament.team_matches_view ORDER BY team_matches_id;", false);
+        if (rs != null) {
+            while (rs.next()) {
+                //Retrieve by column name
+                int teamMatchesID = rs.getInt("team_matches_id");
+                int match_id = rs.getInt("match_id");
+                LocalDate matchStartDate = rs.getDate("match_start_date").toLocalDate();
+                LocalTime matchStartTime = rs.getTime("match_start_time").toLocalTime();
+                String team_name = rs.getString("team_name");
+                int score = rs.getInt("score");
+                System.out.println("Shows all player data.");
+                System.out.println("Team_matches_id: " + teamMatchesID + " Match_id: " + match_id + " MatchStartDate: " + matchStartDate + " MatchStartTime: " + matchStartTime+ " TeamName: " + team_name+ " Score: " + score);
+            }
+        }
+    }
+
+
+    //In case we need a custom query; saveData() and loadData() will be used in most cases.
+    public static ResultSet dbQueryViewTest(String query, boolean update) {
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        // Open a connection to the DB
+        try {
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            stmt = conn.createStatement();
+            if (!update) {
+                rs = stmt.executeQuery(query);
+            } else {
+                stmt.executeUpdate(query);
+            }
+            return rs;
+        } catch (Exception se) {
+            se.printStackTrace();
+        }
+        return null;
     }
 }
 
