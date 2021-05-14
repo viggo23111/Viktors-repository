@@ -1,6 +1,6 @@
 {
     "Name": "crunchify.com",
-    "Author": "App Shah",
+    "Author": "App Sha",
     "Company List": [
         "Compnay: eBay",
         "Compnay: Paypal",
