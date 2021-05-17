@@ -8,7 +8,7 @@ public class Main{
         createBarChart(10,20,30,40,50,60,70,"Viktor");
         createStackedBarChart(10,20,30,40,50,60,70,-10,-20,-30,-40,-50,-60,-70);
         createLineChart(10,20,30,40,50,60,70,"Viktor");
-    }
+    }😄
 
     private static void createBarChart(int day1Commits, int day2Commits, int day3Commits, int day4Commits, int day5Commits, int day6Commits, int day7Commits, String memberName) {
         QuickChart chart = new QuickChart();
@@ -45,7 +45,7 @@ public class Main{
                 "    }," +
                 "  }," +
                 "}"
-        );
+        );🟦U+1F7E6
         System.out.println("Bar chart: "+chart.getShortUrl());
     }
 
