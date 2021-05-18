@@ -1,0 +1,7 @@
+# ignore following
+src/Secrets/*
+out/*
+
+# keep following
+!src/Secrets/.gitkeep
+!src/Secrets/PLangs.json
