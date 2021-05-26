@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="GitHubDiscordBot">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/GitHubDiscordBot-main/GitHubDiscordBot.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
